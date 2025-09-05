@@ -1,9 +1,7 @@
 import { Navigate, Outlet } from "react-router";
 import { useAuth } from "../../contexts/AuthContext";
 import { useEffect } from "react";
-
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
-const LOGOUT_EP = "/auth/logout";
+import Sidebar from "@/components/dashboard/Sidebar";
 
 const Dashboard = () => {
   const { user, loading, refreshUser } = useAuth();
@@ -16,12 +14,10 @@ const Dashboard = () => {
   if (!user) return <Navigate to="/login" replace />;
 
   return (
-    <div>
-      Dashboard
-      <button onClick={() => (window.location.href = API_BASE_URL + LOGOUT_EP)}>
-        Logout
-      </button>
-      <main>
+    <div className="min-h-dvh flex w-full">
+      <Sidebar />
+
+      <main className="flex-1 h-dvh overflow-y-auto">
         <Outlet />
       </main>
     </div>
