@@ -1,3 +1,4 @@
+import { apiEndpoints } from "@/constants/apiEndpoints";
 import { createContext, useContext, useState, type ReactNode } from "react";
 
 type User = {
@@ -32,7 +33,7 @@ export const AuthProvider = ({ children }: Props) => {
   const fetchUser = async () => {
     setLoading(true);
     try {
-      const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/auth/me`, {
+      const res = await fetch(apiEndpoints.auth.authCheck, {
         credentials: "include",
       });
 

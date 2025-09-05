@@ -1,13 +1,13 @@
-const Login = () => {
-  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
-  const LOGIN_EP = "/auth/google";
+import { apiEndpoints } from "@/constants/apiEndpoints";
+import { Button } from "@/components/ui/button";
+import { Link } from "react-router";
 
+const Login = () => {
   return (
     <div>
-      Login
-      <button onClick={() => (window.location.href = API_BASE_URL + LOGIN_EP)}>
-        Login via Google
-      </button>
+      <Button>
+        <Link to={apiEndpoints.auth.googleLogin}>Login with Google</Link>
+      </Button>
     </div>
   );
 };

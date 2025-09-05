@@ -1,4 +1,3 @@
-import "./App.css";
 import { Navigate, Route, Routes } from "react-router";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
@@ -7,6 +6,7 @@ import Overview from "./pages/Dashboard/Overview";
 import Income from "./pages/Dashboard/Income";
 import Expense from "./pages/Dashboard/Expense";
 import Settings from "./pages/Dashboard/Settings";
+import NotFound from "./pages/NotFound";
 
 function App() {
   return (
@@ -20,7 +20,9 @@ function App() {
         <Route path="income" element={<Income />} />
         <Route path="expense" element={<Expense />} />
         <Route path="settings" element={<Settings />} />
+        <Route path="*" element={<NotFound />} />
       </Route>
+      <Route path="*" element={<NotFound />} />
     </Routes>
   );
 }
