@@ -1,8 +1,8 @@
-import { useGetWalletList } from "@/hooks/useGetWalletList";
 import { fetchWallets } from "@/services/walletApi";
 import type { Wallet } from "@/types/wallet";
 import { useQuery } from "@tanstack/react-query";
-import { useEffect, useState } from "react";
+import WalletFormDialog from "./WalletFormDialog";
+import WalletDeleteBtn from "./WalletDeleteBtn";
 
 const WalletList = () => {
   const {
@@ -27,6 +27,8 @@ const WalletList = () => {
               <p>{wallet.balance}</p>
               <p>{wallet.createdAt}</p>
               <p>{wallet.updatedAt}</p>
+              <WalletFormDialog wallet={wallet} />
+              <WalletDeleteBtn wallet={wallet} />
             </div>
           );
         })}

@@ -10,6 +10,6 @@ export const apiEndpoints = {
   },
   wallet: {
     base: wallet,
-    byId: (id: string) => `${wallet}/${id}`,
+    byId: (id: number) => `${wallet}/${id}`,
   },
 };

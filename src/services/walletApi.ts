@@ -12,3 +12,20 @@ export const createWallet = (data: WalletFormData) =>
     },
     body: JSON.stringify(data),
   });
+
+export const updateWallet = (data: WalletFormData, id: number) =>
+  apiFetch<Wallet>(apiEndpoints.wallet.byId(id), {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
+  });
+
+export const deleteWallet = (id: number) =>
+  apiFetch<Wallet>(apiEndpoints.wallet.byId(id), {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
