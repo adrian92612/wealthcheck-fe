@@ -2,7 +2,7 @@ import type z from "zod";
 import type { categorySchema } from "../schemas";
 
 export type Category = {
-  id: number;
+  id: number | string;
   name: string;
   description: string;
   type: CategoryType;
@@ -13,4 +13,5 @@ export type Category = {
 
 export type CategoryFormData = z.infer<typeof categorySchema>;
 
-export type CategoryType = "INCOME" | "EXPENSE";
+export const categoryTypes = ["INCOME", "EXPENSE"] as const;
+export type CategoryType = (typeof categoryTypes)[number];

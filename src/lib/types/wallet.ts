@@ -2,7 +2,7 @@ import type z from "zod";
 import type { walletSchema } from "../schemas";
 
 export type Wallet = {
-  id: number;
+  id: number | string;
   name: string;
   balance: number;
   createdAt: string;

@@ -13,7 +13,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import { Button } from "../ui/button";
 import type { Category } from "@/lib/types/category";
-import { deleteCategory } from "@/lib/services/categoryApi";
+import { categoryApi } from "@/lib/api";
 
 type Props = {
   category: Category;
@@ -23,7 +23,7 @@ const CategoryDeleteBtn = ({ category }: Props) => {
   const [open, setOpen] = useState<boolean>(false);
   const queryClient = useQueryClient();
   const mutation = useMutation({
-    mutationFn: () => deleteCategory(category.id),
+    mutationFn: () => categoryApi.delete(category.id),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["categories"] });
       setOpen(false);

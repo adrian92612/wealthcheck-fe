@@ -11,9 +11,9 @@ import {
   AlertDialogTrigger,
 } from "../ui/alert-dialog";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { deleteWallet } from "@/lib/services/walletApi";
 import { useState } from "react";
 import { Button } from "../ui/button";
+import { walletApi } from "@/lib/api";
 
 type Props = {
   wallet: Wallet;
@@ -23,7 +23,7 @@ const WalletDeleteBtn = ({ wallet }: Props) => {
   const [open, setOpen] = useState<boolean>(false);
   const queryClient = useQueryClient();
   const mutation = useMutation({
-    mutationFn: () => deleteWallet(wallet.id),
+    mutationFn: () => walletApi.delete(wallet.id),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["wallets"] });
       setOpen(false);

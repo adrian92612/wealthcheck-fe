@@ -20,7 +20,7 @@ import { Input } from "../ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
-import { categorySchema } from "@/lib/schemas";
+import { categorySchema, transactionSchema } from "@/lib/schemas";
 import type { Category, CategoryFormData } from "@/lib/types/category";
 import {
   Select,
@@ -31,31 +31,34 @@ import {
 } from "../ui/select";
 import IconPicker from "./CategoryIconPicker";
 import type { categoryIcons } from "@/constants/categoryIcons";
-import { categoryApi } from "@/lib/api";
+import { categoryApi, transactionApi } from "@/lib/api";
+import type { Transaction, TransactionFormData } from "@/lib/types/transaction";
 
 type Props = {
-  category?: Category;
+  transaction?: Transaction;
 };
 
-const CategoryFormDialog = ({ category }: Props) => {
+const CategoryFormDialog = ({ transaction }: Props) => {
   const [open, setOpen] = useState<boolean>(false);
-  const form = useForm<CategoryFormData>({
-    resolver: zodResolver(categorySchema),
+  const form = useForm<TransactionFormData>({
+    resolver: zodResolver(transactionSchema),
     mode: "all",
     defaultValues: {
-      name: category?.name ?? "",
-      description: category?.description ?? "",
-      type: category?.type ?? undefined,
-      icon: category?.icon ?? "",
+      fromWalletId: transaction?.fromWalletId ?? undefined,
+      toWalletId: transaction?.toWalletId ?? undefined,
+      categoryId: transaction?.categoryId ?? undefined,
+      title: transaction?.title ?? undefined,
+      notes: transaction?.notes ?? undefined,
+      amount: transaction?.amount ?? undefined,
     },
   });
   const queryClient = useQueryClient();
   const mutation = useMutation({
-    mutationFn: (data: CategoryFormData) => {
-      if (category?.id) {
-        return categoryApi.update(category.id, data);
+    mutationFn: (data: TransactionFormData) => {
+      if (transaction?.id) {
+        return transactionApi.update(transaction.id, data);
       }
-      return categoryApi.create(data);
+      return transactionApi.create(data);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["categories"] });
@@ -64,19 +67,19 @@ const CategoryFormDialog = ({ category }: Props) => {
     },
   });
 
-  const onSubmit = async (data: CategoryFormData) => {
+  const onSubmit = async (data: TransactionFormData) => {
     mutation.mutate(data);
   };
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button>{category ? "edit" : "add"}</Button>
+        <Button>{transaction ? "edit" : "add"}</Button>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Add Category</DialogTitle>
+          <DialogTitle>Add Transaction</DialogTitle>
           <DialogDescription className="sr-only">
-            Add Category
+            Add Transaction
           </DialogDescription>
         </DialogHeader>
         <Form {...form}>

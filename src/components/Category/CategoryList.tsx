@@ -1,15 +1,15 @@
-import { fetchCategories } from "@/lib/services/categoryApi";
 import type { Category } from "@/lib/types/category";
 import { useQuery } from "@tanstack/react-query";
 import CategoryFormDialog from "./CategoryFormDialog";
 import CategoryDeleteBtn from "./CategoryDeleteBtn";
+import { categoryApi } from "@/lib/api";
 
 const CategoryList = () => {
   const {
     data: response,
     isLoading,
     isError,
-  } = useQuery({ queryKey: ["categories"], queryFn: fetchCategories });
+  } = useQuery({ queryKey: ["categories"], queryFn: categoryApi.fetchAll });
 
   if (isLoading) return <div>Loading wallet list...</div>;
   if (isError) return <div>Network error</div>;
