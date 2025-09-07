@@ -5,8 +5,8 @@ import Dashboard from "./pages/Dashboard/Dashboard";
 import Overview from "./pages/Dashboard/Overview";
 import Income from "./pages/Dashboard/Income";
 import Expense from "./pages/Dashboard/Expense";
-import Settings from "./pages/Dashboard/Settings";
 import NotFound from "./pages/NotFound";
+import Wallet from "./pages/Dashboard/Wallet";
 
 function App() {
   return (
@@ -19,7 +19,8 @@ function App() {
         <Route path="overview" element={<Overview />} />
         <Route path="income" element={<Income />} />
         <Route path="expense" element={<Expense />} />
-        <Route path="settings" element={<Settings />} />
+        <Route path="wallet" element={<Wallet />} />
+
         <Route path="*" element={<NotFound />} />
       </Route>
       <Route path="*" element={<NotFound />} />

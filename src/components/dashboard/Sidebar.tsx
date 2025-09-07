@@ -33,6 +33,10 @@ const menu: Menu[] = [
     link: appRoute.transfer,
   },
   {
+    label: "Wallet",
+    link: appRoute.wallet,
+  },
+  {
     label: "Goals",
     link: appRoute.goals,
   },
