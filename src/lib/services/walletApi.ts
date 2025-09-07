@@ -1,6 +1,6 @@
 import { apiEndpoints } from "@/constants/apiEndpoints";
 import { apiFetch } from "@/lib/apiClient";
-import type { Wallet, WalletFormData } from "@/types/wallet";
+import type { Wallet, WalletFormData } from "@/lib/types/wallet";
 
 export const fetchWallets = () => apiFetch<Wallet[]>(apiEndpoints.wallet.base);
 

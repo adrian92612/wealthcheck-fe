@@ -1,5 +1,5 @@
-import { fetchWallets } from "@/services/walletApi";
-import type { Wallet } from "@/types/wallet";
+import { fetchWallets } from "@/lib/services/walletApi";
+import type { Wallet } from "@/lib/types/wallet";
 import { useQuery } from "@tanstack/react-query";
 import WalletFormDialog from "./WalletFormDialog";
 import WalletDeleteBtn from "./WalletDeleteBtn";

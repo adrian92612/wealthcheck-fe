@@ -1,4 +1,3 @@
-import type { Wallet } from "@/lib/types/wallet";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -11,21 +10,22 @@ import {
   AlertDialogTrigger,
 } from "../ui/alert-dialog";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { deleteWallet } from "@/lib/services/walletApi";
 import { useState } from "react";
 import { Button } from "../ui/button";
+import type { Category } from "@/lib/types/category";
+import { deleteCategory } from "@/lib/services/categoryApi";
 
 type Props = {
-  wallet: Wallet;
+  category: Category;
 };
 
-const WalletDeleteBtn = ({ wallet }: Props) => {
+const CategoryDeleteBtn = ({ category }: Props) => {
   const [open, setOpen] = useState<boolean>(false);
   const queryClient = useQueryClient();
   const mutation = useMutation({
-    mutationFn: () => deleteWallet(wallet.id),
+    mutationFn: () => deleteCategory(category.id),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["wallets"] });
+      queryClient.invalidateQueries({ queryKey: ["categories"] });
       setOpen(false);
     },
   });
@@ -39,8 +39,8 @@ const WalletDeleteBtn = ({ wallet }: Props) => {
         <AlertDialogHeader>
           <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
           <AlertDialogDescription>
-            This action cannot be undone. This will permanently delete your
-            wallet. - {wallet.name}
+            This action cannot be undone. This will permanently delete this
+            category. - {category.name}
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
@@ -59,4 +59,4 @@ const WalletDeleteBtn = ({ wallet }: Props) => {
   );
 };
 
-export default WalletDeleteBtn;
+export default CategoryDeleteBtn;

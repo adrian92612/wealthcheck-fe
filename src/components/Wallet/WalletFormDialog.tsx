@@ -19,17 +19,10 @@ import {
 import { Input } from "../ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { createWallet, updateWallet } from "@/services/walletApi";
-import z from "zod";
-import type { Wallet } from "@/types/wallet";
+import { createWallet, updateWallet } from "@/lib/services/walletApi";
+import type { Wallet, WalletFormData } from "@/lib/types/wallet";
 import { useState } from "react";
-
-const walletSchema = z.object({
-  name: z.string().min(1, { error: "Must be at least 1 character" }),
-  balance: z.number().int().gt(0, "Balance must be greater than 0"),
-});
-
-type WalletSchema = z.infer<typeof walletSchema>;
+import { walletSchema } from "@/lib/schemas";
 
 type Props = {
   wallet?: Wallet;
@@ -37,7 +30,7 @@ type Props = {
 
 const WalletFormDialog = ({ wallet }: Props) => {
   const [open, setOpen] = useState<boolean>(false);
-  const form = useForm<WalletSchema>({
+  const form = useForm<WalletFormData>({
     resolver: zodResolver(walletSchema),
     mode: "all",
     defaultValues: {
@@ -47,7 +40,7 @@ const WalletFormDialog = ({ wallet }: Props) => {
   });
   const queryClient = useQueryClient();
   const mutation = useMutation({
-    mutationFn: (data: WalletSchema) => {
+    mutationFn: (data: WalletFormData) => {
       if (wallet?.id) {
         return updateWallet(data, wallet.id);
       }
@@ -55,11 +48,12 @@ const WalletFormDialog = ({ wallet }: Props) => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["wallets"] });
+      form.reset();
       setOpen(false);
     },
   });
 
-  const onSubmit = async (data: WalletSchema) => {
+  const onSubmit = async (data: WalletFormData) => {
     mutation.mutate(data);
   };
   return (

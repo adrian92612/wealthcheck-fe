@@ -1,6 +1,7 @@
 const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
 const auth = apiBaseUrl + "auth";
 const wallet = apiBaseUrl + "wallet";
+const category = apiBaseUrl + "category";
 
 export const apiEndpoints = {
   auth: {
@@ -11,5 +12,9 @@ export const apiEndpoints = {
   wallet: {
     base: wallet,
     byId: (id: number) => `${wallet}/${id}`,
+  },
+  category: {
+    base: category,
+    byId: (id: number) => `${category}/${id}`,
   },
 };
