@@ -10,5 +10,6 @@ export const appRoute = {
   expense: dashboard + "/expense",
   transfer: dashboard + "/transfer",
   wallet: dashboard + "/wallet",
+  category: dashboard + "/category",
   goals: dashboard + "/goals",
 };

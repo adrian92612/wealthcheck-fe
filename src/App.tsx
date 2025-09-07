@@ -7,6 +7,7 @@ import Income from "./pages/Dashboard/Income";
 import Expense from "./pages/Dashboard/Expense";
 import NotFound from "./pages/NotFound";
 import Wallet from "./pages/Dashboard/Wallet";
+import Category from "./pages/Dashboard/Category";
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
         <Route path="income" element={<Income />} />
         <Route path="expense" element={<Expense />} />
         <Route path="wallet" element={<Wallet />} />
+        <Route path="category" element={<Category />} />
 
         <Route path="*" element={<NotFound />} />
       </Route>

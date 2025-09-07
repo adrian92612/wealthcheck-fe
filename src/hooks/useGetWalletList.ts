@@ -1,6 +1,6 @@
 import { apiEndpoints } from "@/constants/apiEndpoints";
 import { apiFetch, type ApiResponse } from "@/lib/apiClient";
-import type { Wallet } from "@/types/wallet";
+import type { Wallet } from "@/lib/types/wallet";
 import { useEffect, useState } from "react";
 
 export function useGetWalletList() {

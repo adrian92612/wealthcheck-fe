@@ -37,6 +37,10 @@ const menu: Menu[] = [
     link: appRoute.wallet,
   },
   {
+    label: "Category",
+    link: appRoute.category,
+  },
+  {
     label: "Goals",
     link: appRoute.goals,
   },
