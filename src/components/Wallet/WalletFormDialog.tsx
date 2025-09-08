@@ -19,10 +19,10 @@ import {
 import { Input } from "../ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { createWallet, updateWallet } from "@/lib/services/walletApi";
-import type { Wallet, WalletFormData } from "@/lib/types/wallet";
+import type { Wallet, WalletFormData } from "@/lib/types";
 import { useState } from "react";
 import { walletSchema } from "@/lib/schemas";
+import { walletApi } from "@/lib/api";
 
 type Props = {
   wallet?: Wallet;
@@ -35,21 +35,21 @@ const WalletFormDialog = ({ wallet }: Props) => {
     mode: "all",
     defaultValues: {
       name: wallet?.name ?? "",
-      balance: wallet?.balance ?? 0,
+      balance: wallet?.balance ?? undefined,
     },
   });
   const queryClient = useQueryClient();
   const mutation = useMutation({
     mutationFn: (data: WalletFormData) => {
       if (wallet?.id) {
-        return updateWallet(data, wallet.id);
+        return walletApi.update(wallet.id, data);
       }
-      return createWallet(data);
+      return walletApi.create(data);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["wallets"] });
-      form.reset();
       setOpen(false);
+      form.reset();
     },
   });
 
@@ -96,13 +96,9 @@ const WalletFormDialog = ({ wallet }: Props) => {
                       type="number"
                       placeholder="1,000,000"
                       onChange={(e) => {
-                        const value =
-                          e.target.value === ""
-                            ? undefined
-                            : Number(e.target.value);
-                        field.onChange(value);
+                        field.onChange(Number(e.target.value));
                       }}
-                      value={field.value ?? ""}
+                      value={field.value}
                     />
                   </FormControl>
                   <FormMessage />

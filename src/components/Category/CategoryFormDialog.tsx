@@ -21,7 +21,11 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import { categorySchema } from "@/lib/schemas";
-import type { Category, CategoryFormData } from "@/lib/types/category";
+import {
+  categoryTypes,
+  type Category,
+  type CategoryFormData,
+} from "@/lib/types";
 import {
   Select,
   SelectContent,
@@ -29,9 +33,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../ui/select";
-import { createCategory, updateCategory } from "@/lib/services/categoryApi";
 import IconPicker from "./CategoryIconPicker";
 import type { categoryIcons } from "@/constants/categoryIcons";
+import { categoryApi } from "@/lib/api";
+import { capitalizeFirstLetter } from "@/lib/utils";
 
 type Props = {
   category?: Category;
@@ -53,14 +58,14 @@ const CategoryFormDialog = ({ category }: Props) => {
   const mutation = useMutation({
     mutationFn: (data: CategoryFormData) => {
       if (category?.id) {
-        return updateCategory(data, category.id);
+        return categoryApi.update(category.id, data);
       }
-      return createCategory(data);
+      return categoryApi.create(data);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["categories"] });
-      form.reset();
       setOpen(false);
+      form.reset();
     },
   });
 
@@ -127,8 +132,11 @@ const CategoryFormDialog = ({ category }: Props) => {
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        <SelectItem value="INCOME">Income</SelectItem>
-                        <SelectItem value="EXPENSE">Expense</SelectItem>
+                        {categoryTypes.map((type, i) => (
+                          <SelectItem key={i} value={type}>
+                            {capitalizeFirstLetter(type)}
+                          </SelectItem>
+                        ))}
                       </SelectContent>
                     </Select>
                     <FormMessage />
