@@ -1,6 +1,7 @@
 import { normalizeUrl } from "@/lib/utils";
 
 const apiBaseUrl = normalizeUrl(import.meta.env.VITE_API_BASE_URL);
+const overviewUrl = apiBaseUrl + "/overview-summary";
 
 export const apiEndpoints = {
   auth: {
@@ -11,4 +12,7 @@ export const apiEndpoints = {
   wallet: apiBaseUrl + "/wallet",
   category: apiBaseUrl + "/category",
   transaction: apiBaseUrl + "/transaction",
+  currentSummary: overviewUrl + "/current",
+  topTransactions: overviewUrl + "/top-transactions",
+  recentTransactions: overviewUrl + "/recent-transactions",
 };

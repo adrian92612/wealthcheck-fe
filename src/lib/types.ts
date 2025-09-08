@@ -46,3 +46,21 @@ export type Wallet = {
   updatedAt: string;
 };
 export type WalletFormData = z.infer<typeof walletSchema>;
+
+export type CurrentSummary = {
+  totalBalance: number;
+  incomeThisMonth: number;
+  expenseThisMonth: number;
+  netCashFlow: number;
+};
+
+export type TopTransaction = {
+  type: TransactionType;
+  name: string;
+  amount: number;
+};
+
+export type OverviewTopTransaction = {
+  topIncome: TopTransaction[];
+  topExpense: TopTransaction[];
+};
