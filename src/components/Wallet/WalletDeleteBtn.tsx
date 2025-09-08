@@ -1,4 +1,4 @@
-import type { Wallet } from "@/lib/types/wallet";
+import type { Wallet } from "@/lib/types";
 import {
   AlertDialog,
   AlertDialogAction,

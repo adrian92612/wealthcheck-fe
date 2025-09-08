@@ -21,7 +21,11 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import { categorySchema } from "@/lib/schemas";
-import type { Category, CategoryFormData } from "@/lib/types/category";
+import {
+  categoryTypes,
+  type Category,
+  type CategoryFormData,
+} from "@/lib/types";
 import {
   Select,
   SelectContent,
@@ -32,6 +36,7 @@ import {
 import IconPicker from "./CategoryIconPicker";
 import type { categoryIcons } from "@/constants/categoryIcons";
 import { categoryApi } from "@/lib/api";
+import { capitalizeFirstLetter } from "@/lib/utils";
 
 type Props = {
   category?: Category;
@@ -127,8 +132,11 @@ const CategoryFormDialog = ({ category }: Props) => {
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        <SelectItem value="INCOME">Income</SelectItem>
-                        <SelectItem value="EXPENSE">Expense</SelectItem>
+                        {categoryTypes.map((type, i) => (
+                          <SelectItem key={i} value={type}>
+                            {capitalizeFirstLetter(type)}
+                          </SelectItem>
+                        ))}
                       </SelectContent>
                     </Select>
                     <FormMessage />

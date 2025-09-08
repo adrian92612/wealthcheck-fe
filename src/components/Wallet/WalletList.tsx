@@ -1,4 +1,4 @@
-import type { Wallet } from "@/lib/types/wallet";
+import type { Wallet } from "@/lib/types";
 import { useQuery } from "@tanstack/react-query";
 import WalletFormDialog from "./WalletFormDialog";
 import WalletDeleteBtn from "./WalletDeleteBtn";
@@ -7,12 +7,12 @@ import { walletApi } from "@/lib/api";
 const WalletList = () => {
   const {
     data: response,
-    isLoading,
-    isError,
+    isPending,
+    error,
   } = useQuery({ queryKey: ["wallets"], queryFn: walletApi.fetchAll });
 
-  if (isLoading) return <div>Loading wallet list...</div>;
-  if (isError) return <div>Network error</div>;
+  if (isPending) return <div>Loading...</div>;
+  if (error) return <div>An error has occured: {error.message}</div>;
   if (!response?.success) return <div>Error: {response?.message}</div>;
 
   const wallets: Wallet[] = response.data;

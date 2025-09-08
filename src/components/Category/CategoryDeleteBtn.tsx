@@ -12,7 +12,7 @@ import {
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import { Button } from "../ui/button";
-import type { Category } from "@/lib/types/category";
+import type { Category } from "@/lib/types";
 import { categoryApi } from "@/lib/api";
 
 type Props = {

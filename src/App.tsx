@@ -3,11 +3,10 @@ import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard/Dashboard";
 import Overview from "./pages/Dashboard/Overview";
-import Income from "./pages/Dashboard/Income";
-import Expense from "./pages/Dashboard/Expense";
 import NotFound from "./pages/NotFound";
 import Wallet from "./pages/Dashboard/Wallet";
 import Category from "./pages/Dashboard/Category";
+import Transaction from "./pages/Dashboard/Transaction";
 
 function App() {
   return (
@@ -18,8 +17,7 @@ function App() {
       <Route path="/dashboard/*" element={<Dashboard />}>
         <Route index element={<Navigate to="overview" replace />} />
         <Route path="overview" element={<Overview />} />
-        <Route path="income" element={<Income />} />
-        <Route path="expense" element={<Expense />} />
+        <Route path="transaction" element={<Transaction />} />
         <Route path="wallet" element={<Wallet />} />
         <Route path="category" element={<Category />} />
 

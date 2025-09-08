@@ -21,18 +21,6 @@ const menu: Menu[] = [
     link: appRoute.transactions,
   },
   {
-    label: "Income",
-    link: appRoute.income,
-  },
-  {
-    label: "Expense",
-    link: appRoute.expense,
-  },
-  {
-    label: "Transfer",
-    link: appRoute.transfer,
-  },
-  {
     label: "Wallet",
     link: appRoute.wallet,
   },
