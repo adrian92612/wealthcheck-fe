@@ -4,10 +4,12 @@ import TopTransactions from "@/components/Overview/TopTransactions";
 
 const Overview = () => {
   return (
-    <div className="min-h-[200dvh]">
+    <div className="space-y-5 py-5">
       <CurrentSummary />
-      <RecentTransactions />
-      <TopTransactions />
+      <div className="grid xl:grid-cols-5 gap-5">
+        <RecentTransactions />
+        <TopTransactions />
+      </div>
     </div>
   );
 };
