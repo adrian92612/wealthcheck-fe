@@ -2,9 +2,11 @@ import { Navigate, Outlet } from "react-router";
 import { useAuth } from "../../contexts/AuthContext";
 import { useEffect } from "react";
 import Sidebar from "@/components/dashboard/Sidebar";
+import useIsMobile from "@/hooks/useIsMobile";
 
 const Dashboard = () => {
   const { user, loading, refreshUser } = useAuth();
+  const isMobile = useIsMobile();
 
   useEffect(() => {
     refreshUser();
@@ -15,9 +17,10 @@ const Dashboard = () => {
 
   return (
     <div className="min-h-dvh flex w-full">
-      <Sidebar />
+      {!isMobile && <Sidebar />}
 
       <main className="flex-1 h-dvh overflow-y-auto">
+        {isMobile && <Sidebar />}
         <Outlet />
       </main>
     </div>

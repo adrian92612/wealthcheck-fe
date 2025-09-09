@@ -1,37 +1,27 @@
 import { appRoute } from "@/constants/appRoutes";
-import { Button } from "../ui/button";
-import { Link } from "react-router";
-import { apiEndpoints } from "@/constants/apiEndpoints";
 import { useState } from "react";
-import { cn } from "@/lib/utils";
 import useIsMobile from "@/hooks/useIsMobile";
-
-type Menu = {
-  label: string;
-  link: string;
-};
+import {
+  LucideHome,
+  LucideCreditCard,
+  LucideWallet,
+  LucideTag,
+  LucideTarget,
+} from "lucide-react";
+import type { Menu } from "@/lib/types";
+import MobileNavBar from "./MobileNavBar";
+import NavBar from "./NavBar";
 
 const menu: Menu[] = [
-  {
-    label: "Overview",
-    link: appRoute.overview,
-  },
+  { label: "Overview", link: appRoute.overview, icon: LucideHome },
   {
     label: "Transactions",
     link: appRoute.transactions,
+    icon: LucideCreditCard,
   },
-  {
-    label: "Wallet",
-    link: appRoute.wallet,
-  },
-  {
-    label: "Category",
-    link: appRoute.category,
-  },
-  {
-    label: "Goals",
-    link: appRoute.goals,
-  },
+  { label: "Wallet", link: appRoute.wallet, icon: LucideWallet },
+  { label: "Category", link: appRoute.category, icon: LucideTag },
+  { label: "Goals", link: appRoute.goals, icon: LucideTarget },
 ];
 
 const Sidebar = () => {
@@ -39,41 +29,29 @@ const Sidebar = () => {
   const [open, setOpen] = useState(!isMobile);
   const toggleSidebar = () => setOpen(!open);
 
-  return (
-    <aside
-      aria-label="Sidebar"
-      className={cn(
-        open ? "w-48" : "w-10",
-        "flex flex-col justify-between py-5 overflow-hidden transition-all duration-300 border-r-2"
-      )}
-    >
-      <div>
-        <Button
-          onClick={toggleSidebar}
-          aria-expanded={open}
-          aria-controls="sidebar-nav"
-        >
-          toggle
-        </Button>
-        <nav
-          id="sidebar-nav"
-          aria-label="Main navigation"
-          className="flex flex-col gap-3"
-        >
-          {menu.map((m, i) => (
-            <Button key={i} asChild variant="link" className="w-full">
-              <Link to={m.link}>{m.label}</Link>
-            </Button>
-          ))}
-        </nav>
-      </div>
+  const handleLinkClick = () => {
+    if (!open && !isMobile) setOpen(true);
+    if (open && isMobile) setOpen(false);
+  };
 
-      <div>
-        <Button asChild variant="destructive" size="sm" className="w-full">
-          <Link to={apiEndpoints.auth.logout}>Logout</Link>
-        </Button>
-      </div>
-    </aside>
+  return (
+    <>
+      {isMobile ? (
+        <MobileNavBar
+          open={open}
+          setOpen={setOpen}
+          handleLinkClick={handleLinkClick}
+          menu={menu}
+        />
+      ) : (
+        <NavBar
+          open={open}
+          toggleSidebar={toggleSidebar}
+          handleLinkClick={handleLinkClick}
+          menu={menu}
+        />
+      )}
+    </>
   );
 };
 
