@@ -4,6 +4,19 @@ import type {
   transactionSchema,
   walletSchema,
 } from "./schemas";
+import type { ElementType } from "react";
+
+export type User = {
+  email: string;
+  name: string;
+  avatarUrl: string;
+};
+
+export type Menu = {
+  label: string;
+  link: string;
+  icon: ElementType;
+};
 
 export type Category = {
   id: number | string;
