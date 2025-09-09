@@ -26,3 +26,9 @@ export function getFirstName(name: string): string {
   if (!name) return "";
   return name.trim().split(/\s+/)[0] ?? "";
 }
+
+export const formatNumber = (value: number) =>
+  new Intl.NumberFormat("en-US", {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  }).format(value);

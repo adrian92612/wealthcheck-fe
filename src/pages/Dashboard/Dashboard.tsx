@@ -19,7 +19,7 @@ const Dashboard = () => {
     <div className="min-h-dvh flex w-full">
       {!isMobile && <Sidebar />}
 
-      <main className="flex-1 h-dvh overflow-y-auto">
+      <main className="flex-1 h-dvh overflow-y-auto px-2 md:px-10">
         {isMobile && <Sidebar />}
         <Outlet />
       </main>

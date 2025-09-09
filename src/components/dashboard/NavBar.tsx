@@ -35,7 +35,7 @@ const NavBar = ({ open, toggleSidebar, handleLinkClick, menu }: Props) => {
             size="icon"
             aria-expanded={open}
             aria-controls="sidebar-nav"
-            className="ml-auto border-forestGreen text-forestGreen"
+            className="ml-auto border-2 border-forestGreen text-forestGreen hover:text-secondary hover:border-secondary"
           >
             <LucideChevronRight
               className={cn(
@@ -70,8 +70,8 @@ const NavBar = ({ open, toggleSidebar, handleLinkClick, menu }: Props) => {
                     variant="link"
                     onClick={handleLinkClick}
                     className={cn(
-                      "w-full justify-start gap-5.5 rounded-none hover:text-forestGreen",
-                      isActive && "bg-forestGreen text-white"
+                      "w-full justify-start gap-5.5 rounded-none hover:text-secondary",
+                      isActive && "bg-forestGreen text-background"
                     )}
                   >
                     <span className="pl-4.5">
