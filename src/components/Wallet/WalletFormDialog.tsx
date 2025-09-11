@@ -23,6 +23,8 @@ import type { Wallet, WalletFormData } from "@/lib/types";
 import { useState } from "react";
 import { walletSchema } from "@/lib/schemas";
 import { walletApi } from "@/lib/api";
+import { Plus } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 type Props = {
   wallet?: Wallet;
@@ -35,7 +37,7 @@ const WalletFormDialog = ({ wallet }: Props) => {
     mode: "all",
     defaultValues: {
       name: wallet?.name ?? "",
-      balance: wallet?.balance ?? undefined,
+      balance: wallet?.balance ?? 0,
     },
   });
   const queryClient = useQueryClient();
@@ -59,7 +61,18 @@ const WalletFormDialog = ({ wallet }: Props) => {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button>{wallet ? "edit" : "add"}</Button>
+        <Button
+          variant={wallet ? "ghost" : "default"}
+          className={cn(wallet ? "w-full rounded-none" : "w-fit")}
+        >
+          {wallet ? (
+            "Edit"
+          ) : (
+            <span className="inline-flex gap-1 items-center">
+              <Plus /> Add Wallet
+            </span>
+          )}
+        </Button>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
@@ -67,7 +80,10 @@ const WalletFormDialog = ({ wallet }: Props) => {
           <DialogDescription className="sr-only">Add Wallet</DialogDescription>
         </DialogHeader>
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)}>
+          <form
+            onSubmit={form.handleSubmit(onSubmit)}
+            className="flex flex-col gap-4"
+          >
             <FormField
               control={form.control}
               name="name"

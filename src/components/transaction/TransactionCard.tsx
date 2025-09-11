@@ -13,6 +13,7 @@ import TransactionDeleteBtn from "./TransactionDeleteBtn";
 import type { Transaction } from "@/lib/types";
 import { categoryIcons } from "@/constants/categoryIcons";
 import { format } from "date-fns/format";
+import { Button } from "../ui/button";
 
 type Props = {
   tx: Transaction;
@@ -23,7 +24,7 @@ const TransactionCard = ({ tx }: Props) => {
     : null;
 
   return (
-    <div className="flex items-center justify-between rounded-lg border p-3 shadow-sm">
+    <div className="flex items-center justify-between rounded-sm border p-3 shadow-sm">
       <div className="flex items-center gap-3">
         <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gray-100">
           {Icon ? (
@@ -58,15 +59,22 @@ const TransactionCard = ({ tx }: Props) => {
                 : "text-blue-600"
             }`}
           >
-            {tx.type === "EXPENSE" ? "-" : ""}₱{formatNumber(tx.amount)}
+            {tx.type === "EXPENSE" ? "-" : ""}
+            {formatNumber(tx.amount)}
           </p>
           <p className="text-xs text-muted-foreground">
             {format(new Date(tx.createdAt), "MMM d, yyyy")}
           </p>
         </div>
         <DropdownMenu>
-          <DropdownMenuTrigger className="hover:cursor-pointer">
-            <MoreVertical size={16} />
+          <DropdownMenuTrigger asChild className="hover:cursor-pointer">
+            <Button
+              variant="ghost"
+              size="icon"
+              className="p-1 size-7 rounded-full hover:bg-muted"
+            >
+              <MoreVertical size={16} />
+            </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent>
             <DropdownMenuLabel className="text-center">

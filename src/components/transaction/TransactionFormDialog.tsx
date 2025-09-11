@@ -335,9 +335,7 @@ const TransactionFormDialog = ({ transaction, forType }: Props) => {
               )}
             />
 
-            <Button type="submit" className="w-48 self-end">
-              {transaction ? "Update" : "Submit"}
-            </Button>
+            <Button type="submit">{transaction ? "Update" : "Submit"}</Button>
           </form>
         </Form>
       </DialogContent>

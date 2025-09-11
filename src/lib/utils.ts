@@ -27,11 +27,15 @@ export function getFirstName(name: string): string {
   return name.trim().split(/\s+/)[0] ?? "";
 }
 
-export const formatNumber = (value: number) =>
-  new Intl.NumberFormat("en-US", {
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
-  }).format(value);
+export const formatNumber = (value: number) => {
+  return (
+    "₱" +
+    new Intl.NumberFormat("en-US", {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    }).format(value)
+  );
+};
 
 export function toQueryString(params: Record<string, any>): string {
   const query = new URLSearchParams();
