@@ -1,8 +1,8 @@
 import type { Wallet } from "@/lib/types";
 import { useQuery } from "@tanstack/react-query";
-import WalletFormDialog from "./WalletFormDialog";
-import WalletDeleteBtn from "./WalletDeleteBtn";
 import { walletApi } from "@/lib/api";
+import WalletCard from "./WalletCard";
+import WalletSummaryCard from "./WalletSummaryCard";
 
 const WalletList = () => {
   const {
@@ -18,21 +18,15 @@ const WalletList = () => {
   const wallets: Wallet[] = response.data;
 
   return (
-    <div>
+    <ul className="flex flex-wrap justify-evenly gap-5 mx-auto">
+      <WalletSummaryCard wallets={wallets} />
       {!!wallets.length &&
-        wallets.map((wallet) => {
-          return (
-            <div key={wallet.id}>
-              <p>{wallet.name}</p>
-              <p>{wallet.balance}</p>
-              <p>{wallet.createdAt}</p>
-              <p>{wallet.updatedAt}</p>
-              <WalletFormDialog wallet={wallet} />
-              <WalletDeleteBtn wallet={wallet} />
-            </div>
-          );
-        })}
-    </div>
+        wallets.map((wallet) => (
+          <li key={wallet.id} className="w-[300px]">
+            <WalletCard wallet={wallet} />
+          </li>
+        ))}
+    </ul>
   );
 };
 

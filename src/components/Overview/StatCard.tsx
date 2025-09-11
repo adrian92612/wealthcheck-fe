@@ -5,7 +5,7 @@ import {
   CardHeader,
   CardTitle,
 } from "../ui/card";
-import { cn, formatNumber, type ClassValue } from "@/lib/utils";
+import { cn, formatNumber } from "@/lib/utils";
 
 type Props = {
   title: string;
@@ -13,8 +13,8 @@ type Props = {
   icon: React.ElementType;
   totalBalance: number;
   cardCN?: string;
-  iconCN?: ClassValue;
-  contentCN?: ClassValue;
+  iconCN?: string;
+  contentCN?: string;
 };
 
 const StatCard = ({
@@ -44,7 +44,7 @@ const StatCard = ({
           contentCN
         )}
       >
-        ₱ {formatNumber(totalBalance)}
+        {formatNumber(totalBalance)}
       </CardContent>
     </Card>
   );

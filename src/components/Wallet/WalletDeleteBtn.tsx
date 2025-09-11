@@ -33,7 +33,9 @@ const WalletDeleteBtn = ({ wallet }: Props) => {
   return (
     <AlertDialog open={open} onOpenChange={setOpen}>
       <AlertDialogTrigger asChild>
-        <Button>Delete</Button>
+        <Button variant="ghost" className="w-full rounded-none">
+          Delete
+        </Button>
       </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>
