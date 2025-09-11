@@ -1,3 +1,5 @@
+import { toQueryString } from "./utils";
+
 export type ApiResponse<T> = {
   success: boolean;
   code: number;
@@ -22,8 +24,13 @@ export async function apiFetch<T>(
   return res.json() as Promise<ApiResponse<T>>;
 }
 
-export const makeCrudApi = <T, TForm = Partial<T>>(base: string) => ({
-  fetchAll: () => apiFetch<T[]>(base),
+export const makeCrudApi = <T, TForm = Partial<T>, TList = T[]>(
+  base: string
+) => ({
+  fetchAll: (params?: Record<string, any>) => {
+    const qs = params ? `?${toQueryString(params)}` : "";
+    return apiFetch<TList>(`${base}${qs}`);
+  },
   fetchById: (id: number | string) => apiFetch<T>(`${base}/${id}`),
   create: (data: TForm) =>
     apiFetch<T>(base, { method: "POST", body: JSON.stringify(data) }),

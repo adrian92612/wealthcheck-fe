@@ -10,6 +10,7 @@ import type {
   CurrentSummary,
   TopTransaction,
   OverviewTopTransaction,
+  TransactionFilterResType,
 } from "./types";
 
 export const walletApi = makeCrudApi<Wallet, WalletFormData>(
@@ -20,9 +21,11 @@ export const categoryApi = makeCrudApi<Category, CategoryFormData>(
   apiEndpoints.category
 );
 
-export const transactionApi = makeCrudApi<Transaction, TransactionFormData>(
-  apiEndpoints.transaction
-);
+export const transactionApi = makeCrudApi<
+  Transaction,
+  TransactionFormData,
+  TransactionFilterResType
+>(apiEndpoints.transaction);
 
 export const overviewApi = {
   getCurrentSummary: () =>

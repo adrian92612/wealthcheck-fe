@@ -18,7 +18,7 @@ import {
 } from "../ui/form";
 import { Input } from "../ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import { transactionSchema } from "@/lib/schemas";
 import {
@@ -28,30 +28,22 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../ui/select";
-import { transactionApi } from "@/lib/api";
-import { capitalizeFirstLetter } from "@/lib/utils";
+import { categoryApi, transactionApi, walletApi } from "@/lib/api";
+import { capitalizeFirstLetter, cn } from "@/lib/utils";
 import { transactionTypes } from "@/lib/types";
 import type {
-  Category,
-  Wallet,
   TransactionType,
   TransactionFormData,
   Transaction,
 } from "@/lib/types";
+import { Plus } from "lucide-react";
 
 type Props = {
   transaction?: Transaction;
-  wallets: Wallet[];
-  categories: Category[];
   forType?: TransactionType;
 };
 
-const TransactionFormDialog = ({
-  transaction,
-  wallets,
-  categories,
-  forType,
-}: Props) => {
+const TransactionFormDialog = ({ transaction, forType }: Props) => {
   const [open, setOpen] = useState<boolean>(false);
   const form = useForm<TransactionFormData>({
     resolver: zodResolver(transactionSchema),
@@ -66,6 +58,16 @@ const TransactionFormDialog = ({
     },
   });
 
+  const { data: walletResp, isLoading: walletsLoading } = useQuery({
+    queryKey: ["wallets"],
+    queryFn: () => walletApi.fetchAll(),
+  });
+
+  const { data: categoryResp, isLoading: categoriesLoading } = useQuery({
+    queryKey: ["categories"],
+    queryFn: () => categoryApi.fetchAll(),
+  });
+
   const queryClient = useQueryClient();
   const mutation = useMutation({
     mutationFn: (data: TransactionFormData) => {
@@ -77,7 +79,6 @@ const TransactionFormDialog = ({
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["transactions"] });
       setOpen(false);
-      form.reset();
     },
   });
 
@@ -89,10 +90,35 @@ const TransactionFormDialog = ({
   const fromWalletId = form.watch("fromWalletId");
   const toWalletId = form.watch("toWalletId");
 
+  if (walletsLoading || categoriesLoading) {
+    return (
+      <Button disabled className="w-fit">
+        <Plus /> Add Transaction
+      </Button>
+    );
+  }
+
+  if (!walletResp?.success) return <div>Error: {walletResp?.message}</div>;
+  if (!categoryResp?.success) return <div>Error: {categoryResp?.message}</div>;
+
+  const wallets = walletResp?.data;
+  const categories = categoryResp?.data;
+
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button>{transaction ? "edit" : "add"}</Button>
+        <Button
+          variant={transaction ? "ghost" : "default"}
+          className={cn(transaction ? "w-full rounded-none" : "w-fit")}
+        >
+          {transaction ? (
+            "Edit"
+          ) : (
+            <span className="inline-flex gap-1 items-center">
+              <Plus /> Add Transaction
+            </span>
+          )}
+        </Button>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
@@ -103,7 +129,10 @@ const TransactionFormDialog = ({
         </DialogHeader>
 
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)}>
+          <form
+            onSubmit={form.handleSubmit(onSubmit)}
+            className="flex flex-col gap-4"
+          >
             <FormField
               control={form.control}
               name="type"
@@ -306,7 +335,9 @@ const TransactionFormDialog = ({
               )}
             />
 
-            <Button type="submit">{transaction ? "Update" : "Add"}</Button>
+            <Button type="submit" className="w-48 self-end">
+              {transaction ? "Update" : "Submit"}
+            </Button>
           </form>
         </Form>
       </DialogContent>
