@@ -18,11 +18,11 @@ const WalletList = () => {
   const wallets: Wallet[] = response.data;
 
   return (
-    <ul className="flex flex-wrap justify-evenly gap-5 mx-auto">
+    <ul className="flex flex-wrap justify-center sm:justify-start gap-5">
       <WalletSummaryCard wallets={wallets} />
       {!!wallets.length &&
         wallets.map((wallet) => (
-          <li key={wallet.id} className="w-[300px]">
+          <li key={wallet.id} className="flex-[1_0_300px] max-w-[300px]">
             <WalletCard wallet={wallet} />
           </li>
         ))}

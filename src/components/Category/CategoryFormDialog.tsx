@@ -36,7 +36,8 @@ import {
 import IconPicker from "./CategoryIconPicker";
 import type { categoryIcons } from "@/constants/categoryIcons";
 import { categoryApi } from "@/lib/api";
-import { capitalizeFirstLetter } from "@/lib/utils";
+import { capitalizeFirstLetter, cn } from "@/lib/utils";
+import { Plus } from "lucide-react";
 
 type Props = {
   category?: Category;
@@ -75,7 +76,18 @@ const CategoryFormDialog = ({ category }: Props) => {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button>{category ? "edit" : "add"}</Button>
+        <Button
+          variant={category ? "ghost" : "default"}
+          className={cn(category ? "w-full rounded-none" : "w-fit")}
+        >
+          {category ? (
+            "Edit"
+          ) : (
+            <span className="inline-flex gap-1 items-center">
+              <Plus /> Add Category
+            </span>
+          )}
+        </Button>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>

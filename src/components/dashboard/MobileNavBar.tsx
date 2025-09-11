@@ -27,7 +27,11 @@ const MobileNavBar = ({ open, setOpen, handleLinkClick, menu }: Props) => {
   return (
     <Sheet open={open} onOpenChange={setOpen}>
       <SheetTrigger asChild>
-        <Button variant="ghost" size="icon">
+        <Button
+          variant="ghost"
+          size="icon"
+          className="sticky top-0 ml-2 mb-2 rounded-full backdrop-blur-2xl bg-primary text-white z-10"
+        >
           <LucideAlignJustify />
         </Button>
       </SheetTrigger>

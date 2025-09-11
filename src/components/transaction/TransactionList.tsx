@@ -1,6 +1,5 @@
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { transactionApi } from "@/lib/api";
-import TransactionFormDialog from "./TransactionFormDialog";
 import { useState } from "react";
 import { type TransactionFilterType } from "@/lib/types";
 import { format } from "date-fns";
@@ -76,8 +75,6 @@ const TransactionList = () => {
         refetch={refetch}
         handleReset={handleReset}
       />
-
-      <TransactionFormDialog />
 
       <TransactionCardsBlock
         transactions={transactions}
