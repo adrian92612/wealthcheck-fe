@@ -43,14 +43,14 @@ const RecentTransactions = () => {
                 ? "text-red-600"
                 : tx.type === "INCOME"
                 ? "text-green-600"
-                : "text-gray-600";
+                : "text-blue-600";
             return (
               <div
                 key={i}
-                className={`flex justify-between items-start border p-3 shadow-sm hover:bg-forestGreen/20`}
+                className="flex justify-between gap-2 flex-wrap items-start border p-3 shadow-sm hover:bg-forestGreen/20"
               >
                 <div className="flex items-center gap-3">
-                  <Circle className={cn("size-4 shrink-0", fontColor)} />
+                  <Circle className={cn("size-5 shrink-0", fontColor)} />
                   <div className="flex flex-col">
                     <span className="font-medium">{tx.name}</span>
                     <span className="text-xs text-muted-foreground">

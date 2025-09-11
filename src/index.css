@@ -209,11 +209,11 @@
   /* --color-popover: var(--popover); */
   --color-primary: var(--primary);
   --color-secondary: var(--secondary);
-  /* --color-muted: var(--muted); */
-  /* --color-accent: var(--accent); */
+  --color-muted: var(--muted);
+  --color-accent: var(--accent);
   --color-destructive: var(--destructive);
   --color-border: var(--border);
-  /* --color-input: var(--input); */
+  --color-input: var(--input);
   --color-ring: var(--ring);
 }
 

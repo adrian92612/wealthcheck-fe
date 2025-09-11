@@ -47,6 +47,27 @@ export type Transaction = {
   createdAt: string;
   updatedAt: string;
 };
+
+export type TransactionFilterType = {
+  page: number | null;
+  size: number | null;
+  type: TransactionType | null;
+  walletId: number | null;
+  categoryId: number | null;
+  fromDate: string | null;
+  toDate: string | null;
+  search: string | null;
+};
+
+export type TransactionFilterResType = {
+  transactions: Transaction[];
+  filters: TransactionFilterType;
+  totalItems: number;
+  currentPage: number;
+  pageSize: number;
+  totalPages: number;
+};
+
 export type TransactionFormData = z.infer<typeof transactionSchema>;
 export const transactionTypes = ["INCOME", "EXPENSE", "TRANSFER"] as const;
 export type TransactionType = (typeof transactionTypes)[number];

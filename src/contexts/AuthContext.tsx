@@ -3,7 +3,8 @@ import { createContext, useContext, useState, type ReactNode } from "react";
 
 type User = {
   email: string;
-  name: String;
+  name: string;
+  avatarUrl: string;
 };
 
 type AuthContextType = {
