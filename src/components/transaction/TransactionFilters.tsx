@@ -1,9 +1,7 @@
 import {
   transactionTypes,
-  type Category,
   type TransactionFilterType,
   type TransactionType,
-  type Wallet,
 } from "@/lib/types";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
@@ -62,6 +60,11 @@ const TransactionFilters = ({
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     refetch();
+  };
+
+  const handleFilterReset = () => {
+    setLocalSearch("");
+    handleReset();
   };
 
   if (wPending || cPending) return <div>Loading filters...</div>;
@@ -190,7 +193,11 @@ const TransactionFilters = ({
           <LucideSearch size={16} />
           Search
         </Button>
-        <Button type="button" onClick={handleReset} className="bg-secondary">
+        <Button
+          type="button"
+          onClick={handleFilterReset}
+          className="bg-secondary"
+        >
           <LucideRefreshCw size={16} />
           Reset
         </Button>

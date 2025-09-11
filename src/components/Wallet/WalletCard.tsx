@@ -21,7 +21,7 @@ const WalletCard = ({ wallet }: Props) => {
   return (
     <Card className="rounded-xl shadow-lg border-l-2 border-primary bg-background">
       <CardHeader>
-        <div className="flex justify-between items-start">
+        <div className="flex justify-between items-center">
           <CardTitle className="text-lg font-semibold">{wallet.name}</CardTitle>
           <DropdownMenu>
             <DropdownMenuTrigger asChild className="hover:cursor-pointer">
