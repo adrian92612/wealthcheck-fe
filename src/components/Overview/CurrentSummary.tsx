@@ -3,28 +3,24 @@ import { useQuery } from "@tanstack/react-query";
 
 import { Wallet, ArrowUpCircle, ArrowDownCircle, Activity } from "lucide-react";
 import StatCard from "./StatCard";
+import CurrentSummarySkeleton from "../skeleton/CurrentSummarySkeleton";
 
 const CurrentSummary = () => {
-  const {
-    data: response,
-    isPending,
-    error,
-  } = useQuery({
+  const { data: response, isPending } = useQuery({
     queryKey: ["currentSummary"],
     queryFn: overviewApi.getCurrentSummary,
+    throwOnError: true,
   });
 
-  if (isPending) return <div>Loading...</div>;
-  if (error) return <div>An error has occured: {error.message}</div>;
-
-  if (!response.success) {
-    return <div>Something went wrong: {response.message}</div>;
+  if (isPending) return <CurrentSummarySkeleton />;
+  if (!response?.success) {
+    return <div>Something went wrong: {response?.message}</div>;
   }
 
   const summary = response.data;
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 2xl:grid-cols-4 gap-5 place-items-center place-items-stretch">
+    <div className="grid grid-cols-1 sm:grid-cols-2 2xl:grid-cols-4 gap-5 place-items-stretch">
       <StatCard
         title="Total Balance"
         description="You current balance"

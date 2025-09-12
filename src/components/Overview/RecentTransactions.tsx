@@ -10,22 +10,19 @@ import {
 import type { TopTransaction } from "@/lib/types";
 import { Circle } from "lucide-react";
 import { capitalizeFirstLetter, cn } from "@/lib/utils";
+import RecentTransactionSkeleton from "../skeleton/RecentTransactionSkeleton";
 
 const RecentTransactions = () => {
-  const {
-    data: res,
-    isPending,
-    error,
-  } = useQuery({
+  const { data: res, isPending } = useQuery({
     queryKey: ["recentTransactions"],
     queryFn: overviewApi.getRecentTransactions,
+    throwOnError: true,
   });
 
-  if (isPending) return <div>Loading...</div>;
-  if (error) return <div>An error has occured: {error.message}</div>;
+  if (isPending) return <RecentTransactionSkeleton />;
 
-  if (!res.success) {
-    return <div>Something went wrong: {res.message}</div>;
+  if (!res?.success) {
+    return <div>Something went wrong: {res?.message}</div>;
   }
 
   const transactions: TopTransaction[] = res.data;

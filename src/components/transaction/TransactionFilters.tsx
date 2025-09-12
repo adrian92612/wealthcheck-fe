@@ -21,6 +21,7 @@ import { useDebouncedCallback } from "use-debounce";
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { categoryApi, walletApi } from "@/lib/api";
+import TransactionFiltersSkeleton from "../skeleton/TransactionFiltersSkeleton";
 
 type Props = {
   filter: TransactionFilterType;
@@ -35,21 +36,15 @@ const TransactionFilters = ({
   refetch,
   handleReset,
 }: Props) => {
-  const {
-    data: walletResp,
-    isPending: wPending,
-    error: wError,
-  } = useQuery({
+  const { data: walletResp, isPending: wPending } = useQuery({
     queryKey: ["wallets"],
     queryFn: walletApi.fetchAll,
+    throwOnError: true,
   });
-  const {
-    data: catResp,
-    isPending: cPending,
-    error: cError,
-  } = useQuery({
+  const { data: catResp, isPending: cPending } = useQuery({
     queryKey: ["categories"],
     queryFn: categoryApi.fetchAll,
+    throwOnError: true,
   });
   const [localSearch, setLocalSearch] = useState(filter.search ?? "");
 
@@ -67,8 +62,7 @@ const TransactionFilters = ({
     handleReset();
   };
 
-  if (wPending || cPending) return <div>Loading filters...</div>;
-  if (wError || cError) return <div>Something went wrong, try again later</div>;
+  if (wPending || cPending) return <TransactionFiltersSkeleton />;
   if (!walletResp?.success || !catResp?.success)
     return <div>Error loading filters</div>;
 
@@ -81,7 +75,7 @@ const TransactionFilters = ({
         <Label>Keyword</Label>
         <Input
           placeholder="search for keyword"
-          className="max-w-96"
+          className="w-48"
           value={localSearch}
           onChange={({ target }) => {
             setLocalSearch(target.value);
@@ -99,7 +93,7 @@ const TransactionFilters = ({
             })
           }
         >
-          <SelectTrigger className="w-[180px]">
+          <SelectTrigger className="w-48">
             <SelectValue placeholder="Select a wallet" />
           </SelectTrigger>
           <SelectContent>
@@ -124,7 +118,7 @@ const TransactionFilters = ({
             })
           }
         >
-          <SelectTrigger className="w-[180px]">
+          <SelectTrigger className="w-48">
             <SelectValue placeholder="Select a Category" />
           </SelectTrigger>
           <SelectContent>
@@ -150,7 +144,7 @@ const TransactionFilters = ({
             })
           }
         >
-          <SelectTrigger className="w-[180px]">
+          <SelectTrigger className="w-48">
             <SelectValue placeholder="Select a Type" />
           </SelectTrigger>
           <SelectContent>

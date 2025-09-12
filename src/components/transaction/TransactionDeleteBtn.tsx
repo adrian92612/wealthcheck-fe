@@ -28,6 +28,7 @@ const TransactionDeleteBtn = ({ transaction }: Props) => {
       queryClient.invalidateQueries({ queryKey: ["transactions"] });
       setOpen(false);
     },
+    throwOnError: true,
   });
 
   return (

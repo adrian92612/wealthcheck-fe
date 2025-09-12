@@ -46,7 +46,6 @@ const IconPicker = ({ value, onChange }: IconPickerProps) => {
               }`}
             >
               <Icon className="h-5 w-5 mx-auto" />
-              {/* <span className="text-xs block truncate">{key}</span> */}
             </Button>
           ))}
         </div>

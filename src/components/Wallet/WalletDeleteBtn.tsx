@@ -28,6 +28,7 @@ const WalletDeleteBtn = ({ wallet }: Props) => {
       queryClient.invalidateQueries({ queryKey: ["wallets"] });
       setOpen(false);
     },
+    throwOnError: true,
   });
 
   return (

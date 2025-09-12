@@ -2,16 +2,16 @@ import type { Category } from "@/lib/types";
 import { useQuery } from "@tanstack/react-query";
 import { categoryApi } from "@/lib/api";
 import CategoryCard from "./CategoryCard";
+import CategoryListSkeleton from "../skeleton/CategoryListSkeleton";
 
 const CategoryList = () => {
-  const {
-    data: response,
-    isPending,
-    error,
-  } = useQuery({ queryKey: ["categories"], queryFn: categoryApi.fetchAll });
+  const { data: response, isPending } = useQuery({
+    queryKey: ["categories"],
+    queryFn: categoryApi.fetchAll,
+    throwOnError: true,
+  });
 
-  if (isPending) return <div>Loading...</div>;
-  if (error) return <div>An error has occured: {error.message}</div>;
+  if (isPending) return <CategoryListSkeleton />;
   if (!response?.success) return <div>Error: {response?.message}</div>;
 
   const categories: Category[] = response.data;
@@ -29,13 +29,9 @@ const CategoryList = () => {
         </div>
       </div>
 
-      {/* Category Grid */}
       <ul className="flex flex-wrap justify-center sm:justify-start gap-5">
         {categories.map((category) => (
-          <li
-            key={category.id}
-            className="shadow-md flex-[1_0_300px] max-w-[300px]"
-          >
+          <li key={category.id} className="flex-[1_0_300px] max-w-[300px]">
             <CategoryCard category={category} />
           </li>
         ))}
