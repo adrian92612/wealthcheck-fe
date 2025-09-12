@@ -8,22 +8,18 @@ import {
   CardTitle,
 } from "../ui/card";
 import type { OverviewTopTransaction } from "@/lib/types";
+import TopTransactionSkeleton from "../skeleton/TopTransactionSkeleton";
 
 const TopTransactions = () => {
-  const {
-    data: res,
-    isPending,
-    error,
-  } = useQuery({
+  const { data: res, isPending } = useQuery({
     queryKey: ["topTransactions"],
     queryFn: overviewApi.getTopTransactions,
+    throwOnError: true,
   });
 
-  if (isPending) return <div>Loading...</div>;
-  if (error) return <div>An error has occured: {error.message}</div>;
-
-  if (!res.success) {
-    return <div>Something went wrong: {res.message}</div>;
+  if (isPending) return <TopTransactionSkeleton />;
+  if (!res?.success) {
+    return <div>Something went wrong: {res?.message}</div>;
   }
 
   const data: OverviewTopTransaction = res.data;
@@ -36,7 +32,6 @@ const TopTransactions = () => {
 
       <CardContent>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {/* Income */}
           <div>
             <h3 className="font-semibold mb-2 text-green-600">Top Income</h3>
             <div className="space-y-2">
@@ -54,7 +49,6 @@ const TopTransactions = () => {
             </div>
           </div>
 
-          {/* Expense */}
           <div>
             <h3 className="font-semibold mb-2 text-red-600">Top Expense</h3>
             <div className="space-y-2">

@@ -28,6 +28,7 @@ const CategoryDeleteBtn = ({ category }: Props) => {
       queryClient.invalidateQueries({ queryKey: ["categories"] });
       setOpen(false);
     },
+    throwOnError: true,
   });
 
   return (

@@ -25,12 +25,12 @@ const TransactionPageControl = ({
   handlePageSizeChange,
 }: Props) => {
   return (
-    <div className="flex justify-between gap-5 flex-wrap mt-4">
+    <div className="flex justify-between gap-5 flex-wrap">
       <Select
         value={String(filter.size)}
         onValueChange={(value) => handlePageSizeChange(Number(value))}
       >
-        <SelectTrigger className="w-[180px]">
+        <SelectTrigger className="w-48">
           <SelectValue placeholder="Select a Type" />
         </SelectTrigger>
         <SelectContent>

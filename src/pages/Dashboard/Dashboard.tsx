@@ -3,16 +3,13 @@ import { useAuth } from "../../contexts/AuthContext";
 import { useEffect } from "react";
 import Sidebar from "@/components/dashboard/Sidebar";
 import useIsMobile from "@/hooks/useIsMobile";
+import DashboardSkeleton from "@/components/skeleton/DashboardSkeleton";
 
 const Dashboard = () => {
-  const { user, loading, refreshUser } = useAuth();
+  const { user, loading } = useAuth();
   const isMobile = useIsMobile();
 
-  useEffect(() => {
-    refreshUser();
-  }, []);
-
-  if (loading) return <div>Loading...</div>;
+  if (loading) return <DashboardSkeleton />;
   if (!user) return <Navigate to="/login" replace />;
 
   return (

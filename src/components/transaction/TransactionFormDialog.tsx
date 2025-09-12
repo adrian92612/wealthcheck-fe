@@ -61,11 +61,13 @@ const TransactionFormDialog = ({ transaction, forType }: Props) => {
   const { data: walletResp, isLoading: walletsLoading } = useQuery({
     queryKey: ["wallets"],
     queryFn: () => walletApi.fetchAll(),
+    throwOnError: true,
   });
 
   const { data: categoryResp, isLoading: categoriesLoading } = useQuery({
     queryKey: ["categories"],
     queryFn: () => categoryApi.fetchAll(),
+    throwOnError: true,
   });
 
   const queryClient = useQueryClient();
@@ -80,6 +82,7 @@ const TransactionFormDialog = ({ transaction, forType }: Props) => {
       queryClient.invalidateQueries({ queryKey: ["transactions"] });
       setOpen(false);
     },
+    throwOnError: true,
   });
 
   const onSubmit = async (data: TransactionFormData) => {

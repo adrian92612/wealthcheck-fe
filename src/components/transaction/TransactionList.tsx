@@ -6,6 +6,7 @@ import { format } from "date-fns";
 import TransactionFilters from "./TransactionFilters";
 import TransactionPageControl from "./TransactionPageControl";
 import TransactionCardsBlock from "./TransactionCardsBlock";
+import TransactionListSkeleton from "../skeleton/TransactionListSkeleton";
 
 export const initialFilter: TransactionFilterType = {
   page: 1,
@@ -25,17 +26,14 @@ const TransactionList = () => {
   const {
     data: txResp,
     isPending: txPending,
-    error: txError,
     refetch,
   } = useQuery({
     queryKey: ["transactions"],
     queryFn: () => transactionApi.fetchAll(filter),
+    throwOnError: true,
   });
 
-  if (txPending) return <div>Loading...</div>;
-  if (txError) {
-    return <div>An error has occured, try again later.</div>;
-  }
+  if (txPending) return <TransactionListSkeleton />;
   if (!txResp?.success) return <div>Error: {txResp?.message}</div>;
 
   const transactions = txResp.data.transactions;

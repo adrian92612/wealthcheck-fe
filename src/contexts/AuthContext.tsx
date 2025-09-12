@@ -1,5 +1,11 @@
 import { apiEndpoints } from "@/constants/apiEndpoints";
-import { createContext, useContext, useState, type ReactNode } from "react";
+import {
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+  type ReactNode,
+} from "react";
 
 type User = {
   email: string;
@@ -48,6 +54,10 @@ export const AuthProvider = ({ children }: Props) => {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    fetchUser();
+  }, []);
 
   return (
     <AuthContext.Provider value={{ user, loading, refreshUser: fetchUser }}>

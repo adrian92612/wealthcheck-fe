@@ -3,16 +3,16 @@ import { useQuery } from "@tanstack/react-query";
 import { walletApi } from "@/lib/api";
 import WalletCard from "./WalletCard";
 import WalletSummaryCard from "./WalletSummaryCard";
+import WalletListSkeleton from "../skeleton/WalletListSkeleton";
 
 const WalletList = () => {
-  const {
-    data: response,
-    isPending,
-    error,
-  } = useQuery({ queryKey: ["wallets"], queryFn: walletApi.fetchAll });
+  const { data: response, isPending } = useQuery({
+    queryKey: ["wallets"],
+    queryFn: walletApi.fetchAll,
+    throwOnError: true,
+  });
 
-  if (isPending) return <div>Loading...</div>;
-  if (error) return <div>An error has occured: {error.message}</div>;
+  if (isPending) return <WalletListSkeleton />;
   if (!response?.success) return <div>Error: {response?.message}</div>;
 
   const wallets: Wallet[] = response.data;

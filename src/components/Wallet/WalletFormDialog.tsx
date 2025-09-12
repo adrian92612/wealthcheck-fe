@@ -51,8 +51,8 @@ const WalletFormDialog = ({ wallet }: Props) => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["wallets"] });
       setOpen(false);
-      form.reset();
     },
+    throwOnError: true,
   });
 
   const onSubmit = async (data: WalletFormData) => {

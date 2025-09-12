@@ -1,28 +1,8 @@
-import { appRoute } from "@/constants/appRoutes";
 import { useState } from "react";
 import useIsMobile from "@/hooks/useIsMobile";
-import {
-  LucideHome,
-  LucideCreditCard,
-  LucideWallet,
-  LucideTag,
-  LucideTarget,
-} from "lucide-react";
-import type { Menu } from "@/lib/types";
 import MobileNavBar from "./MobileNavBar";
 import NavBar from "./NavBar";
-
-const menu: Menu[] = [
-  { label: "Overview", link: appRoute.overview, icon: LucideHome },
-  {
-    label: "Transactions",
-    link: appRoute.transactions,
-    icon: LucideCreditCard,
-  },
-  { label: "Wallet", link: appRoute.wallet, icon: LucideWallet },
-  { label: "Category", link: appRoute.category, icon: LucideTag },
-  { label: "Goals", link: appRoute.goals, icon: LucideTarget },
-];
+import { menu } from "@/constants/constants";
 
 const Sidebar = () => {
   const isMobile = useIsMobile();
