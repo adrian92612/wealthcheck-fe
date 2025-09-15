@@ -5,7 +5,6 @@ const dashboard = baseUrl + "/dashboard";
 
 export const appRoute = {
   home: baseUrl,
-  login: baseUrl + "/login",
   overview: dashboard + "/overview",
   transactions: dashboard + "/transaction",
   wallet: dashboard + "/wallet",
