@@ -1,9 +1,8 @@
 import { Navigate, Outlet } from "react-router";
-import { useAuth } from "../../contexts/AuthContext";
-import { useEffect } from "react";
 import Sidebar from "@/components/dashboard/Sidebar";
 import useIsMobile from "@/hooks/useIsMobile";
 import DashboardSkeleton from "@/components/skeleton/DashboardSkeleton";
+import { useAuth } from "@/hooks/useAuth";
 
 const Dashboard = () => {
   const { user, loading } = useAuth();

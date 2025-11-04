@@ -2,10 +2,10 @@ import { Link } from "react-router";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { Button } from "../ui/button";
 import { LogOut } from "lucide-react";
-import { useAuth } from "@/contexts/AuthContext";
 import { getFirstName, getInitials } from "@/lib/utils";
 import { apiEndpoints } from "@/constants/apiEndpoints";
 import { Separator } from "../ui/separator";
+import { useAuth } from "@/hooks/useAuth";
 
 const AvatarSection = () => {
   const { user } = useAuth();

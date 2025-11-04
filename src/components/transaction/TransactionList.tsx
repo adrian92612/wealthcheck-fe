@@ -2,22 +2,11 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { transactionApi } from "@/lib/api";
 import { useState } from "react";
 import { type TransactionFilterType } from "@/lib/types";
-import { format } from "date-fns";
 import TransactionFilters from "./TransactionFilters";
 import TransactionPageControl from "./TransactionPageControl";
 import TransactionCardsBlock from "./TransactionCardsBlock";
 import TransactionListSkeleton from "../skeleton/TransactionListSkeleton";
-
-export const initialFilter: TransactionFilterType = {
-  page: 1,
-  size: 10,
-  categoryId: null,
-  walletId: null,
-  fromDate: format(new Date(2000, 0, 1), "yyyy-MM-dd"),
-  toDate: format(new Date(), "yyyy-MM-dd"),
-  type: null,
-  search: null,
-};
+import { initialFilter } from "./constants";
 
 const TransactionList = () => {
   const [filter, setFilter] = useState<TransactionFilterType>(initialFilter);

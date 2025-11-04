@@ -1,4 +1,4 @@
-import type z from "zod";
+import z from "zod";
 import type {
   categorySchema,
   transactionSchema,
@@ -12,27 +12,32 @@ export type User = {
   avatarUrl: string;
 };
 
+export type AuthContextType = {
+  user: User | null;
+  loading: boolean;
+  refreshUser: () => Promise<void>;
+};
+
 export type Menu = {
   label: string;
   link: string;
   icon: ElementType;
 };
 
-export type Category = {
+type BaseEntity = {
   id: number | string;
+  createdAt: string;
+  updatedAt: string;
+};
+
+export type Category = BaseEntity & {
   name: string;
   description: string;
   type: CategoryType;
   icon: string;
-  createdAt: string;
-  updatedAt: string;
 };
-export type CategoryFormData = z.infer<typeof categorySchema>;
-export const categoryTypes = ["INCOME", "EXPENSE"] as const;
-export type CategoryType = (typeof categoryTypes)[number];
 
-export type Transaction = {
-  id: number | string;
+export type Transaction = BaseEntity & {
   type: TransactionType;
   fromWalletId?: number;
   toWalletId?: number;
@@ -44,9 +49,16 @@ export type Transaction = {
   title: string;
   notes?: string;
   amount: number;
-  createdAt: string;
-  updatedAt: string;
 };
+
+export type Wallet = BaseEntity & {
+  name: string;
+  balance: number;
+};
+
+export type CategoryFormData = z.infer<typeof categorySchema>;
+export const categoryTypes = ["INCOME", "EXPENSE"] as const;
+export type CategoryType = (typeof categoryTypes)[number];
 
 export type TransactionFilterType = {
   page: number | null;
@@ -72,13 +84,6 @@ export type TransactionFormData = z.infer<typeof transactionSchema>;
 export const transactionTypes = ["INCOME", "EXPENSE", "TRANSFER"] as const;
 export type TransactionType = (typeof transactionTypes)[number];
 
-export type Wallet = {
-  id: number | string;
-  name: string;
-  balance: number;
-  createdAt: string;
-  updatedAt: string;
-};
 export type WalletFormData = z.infer<typeof walletSchema>;
 
 export type CurrentSummary = {
