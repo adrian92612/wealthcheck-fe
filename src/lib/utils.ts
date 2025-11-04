@@ -37,7 +37,7 @@ export const formatNumber = (value: number) => {
   );
 };
 
-export function toQueryString(params: Record<string, any>): string {
+export function toQueryString(params: Record<string, unknown>): string {
   const query = new URLSearchParams();
 
   Object.entries(params).forEach(([key, value]) => {

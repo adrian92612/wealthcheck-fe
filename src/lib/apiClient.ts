@@ -12,13 +12,13 @@ export async function apiFetch<T>(
   endpoint: string,
   options: RequestInit = {}
 ): Promise<ApiResponse<T>> {
+  const headers = new Headers(options.headers);
+  headers.set("Content-Type", "application/json");
+
   const res = await fetch(endpoint, {
     ...options,
     credentials: "include",
-    headers: {
-      "Content-Type": "application/json",
-      ...(options.headers || {}),
-    },
+    headers,
   });
 
   return res.json() as Promise<ApiResponse<T>>;
@@ -27,7 +27,7 @@ export async function apiFetch<T>(
 export const makeCrudApi = <T, TForm = Partial<T>, TList = T[]>(
   base: string
 ) => ({
-  fetchAll: (params?: Record<string, any>) => {
+  fetchAll: (params?: Record<string, unknown>) => {
     const qs = params ? `?${toQueryString(params)}` : "";
     return apiFetch<TList>(`${base}${qs}`);
   },

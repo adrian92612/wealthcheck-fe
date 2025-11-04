@@ -19,7 +19,7 @@ const TransactionCardsBlock = ({ transactions, totalItems }: Props) => {
   const randomMessage = messages[Math.floor(Math.random() * messages.length)];
   return (
     <div className="space-y-3">
-      {!!transactions.length ? (
+      {transactions.length ? (
         transactions.map((tx) => <TransactionCard key={tx.id} tx={tx} />)
       ) : (
         <div className="text-center h-10 font-bold"> {randomMessage} </div>

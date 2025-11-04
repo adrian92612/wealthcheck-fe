@@ -1,33 +1,7 @@
 import { apiEndpoints } from "@/constants/apiEndpoints";
-import {
-  createContext,
-  useContext,
-  useEffect,
-  useState,
-  type ReactNode,
-} from "react";
-
-type User = {
-  email: string;
-  name: string;
-  avatarUrl: string;
-};
-
-type AuthContextType = {
-  user: User | null;
-  loading: boolean;
-  refreshUser: () => Promise<void>;
-};
-
-const AuthContext = createContext<AuthContextType | undefined>(undefined);
-
-export const useAuth = (): AuthContextType => {
-  const context = useContext(AuthContext);
-  if (!context) {
-    throw new Error("useAuth must be used within AuthContextProvider");
-  }
-  return context;
-};
+import { useEffect, useState, type ReactNode } from "react";
+import { AuthContext } from "@/hooks/useAuth";
+import type { User } from "@/lib/types";
 
 type Props = {
   children: ReactNode;

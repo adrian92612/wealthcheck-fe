@@ -177,7 +177,7 @@ const TransactionFormDialog = ({ transaction, forType }: Props) => {
                     <FormLabel>From Wallet</FormLabel>
                     <Select
                       onValueChange={(val) => field.onChange(Number(val))}
-                      value={!!field.value ? String(field.value) : ""}
+                      value={field.value ? String(field.value) : ""}
                     >
                       <FormControl>
                         <SelectTrigger>
@@ -212,7 +212,7 @@ const TransactionFormDialog = ({ transaction, forType }: Props) => {
                     <FormLabel>To Wallet</FormLabel>
                     <Select
                       onValueChange={(val) => field.onChange(Number(val))}
-                      value={!!field.value ? String(field.value) : ""}
+                      value={field.value ? String(field.value) : ""}
                     >
                       <FormControl>
                         <SelectTrigger>
