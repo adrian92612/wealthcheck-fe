@@ -1,4 +1,3 @@
-import { Link } from "react-router";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { Button } from "../ui/button";
 import { LogOut } from "lucide-react";
@@ -26,10 +25,10 @@ const AvatarSection = () => {
         size="sm"
         className="justify-start w-full rounded-none gap-5.5"
       >
-        <Link to={apiEndpoints.auth.logout}>
+        <a href={apiEndpoints.auth.logout}>
           <LogOut className="size-5 ml-2" />
           <span className="font-semibold text-sm">Logout</span>
-        </Link>
+        </a>
       </Button>
     </div>
   );

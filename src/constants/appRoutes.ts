@@ -1,10 +1,7 @@
-import { normalizeUrl } from "@/lib/utils";
-
-const baseUrl = normalizeUrl(import.meta.env.BASE_URL);
-const dashboard = baseUrl + "/dashboard";
+const dashboard = "/dashboard";
 
 export const appRoute = {
-  home: baseUrl,
+  home: "/",
   overview: dashboard + "/overview",
   transactions: dashboard + "/transaction",
   wallet: dashboard + "/wallet",

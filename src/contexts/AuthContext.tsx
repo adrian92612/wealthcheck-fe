@@ -18,10 +18,13 @@ export const AuthProvider = ({ children }: Props) => {
         credentials: "include",
       });
 
-      if (!res.ok) throw new Error("Not authenticated");
+      if (!res.ok) {
+        setUser(null);
+        return;
+      }
 
-      const data = await res.json();
-      setUser(data.data);
+      const { data } = await res.json();
+      setUser(data);
     } catch {
       setUser(null);
     } finally {

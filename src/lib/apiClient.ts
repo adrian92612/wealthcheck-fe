@@ -1,3 +1,4 @@
+import { appRoute } from "@/constants/appRoutes";
 import { toQueryString } from "./utils";
 
 export type ApiResponse<T> = {
@@ -20,6 +21,10 @@ export async function apiFetch<T>(
     credentials: "include",
     headers,
   });
+
+  if (res.status === 401 || res.status === 403) {
+    window.location.href = appRoute.home;
+  }
 
   return res.json() as Promise<ApiResponse<T>>;
 }
