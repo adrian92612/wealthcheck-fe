@@ -18,10 +18,10 @@ function App() {
         <Route path="transaction" element={<Transaction />} />
         <Route path="wallet" element={<Wallet />} />
         <Route path="category" element={<Category />} />
-
         <Route path="*" element={<NotFound />} />
       </Route>
-      <Route path="*" element={<NotFound />} />
+
+      <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   );
 }

@@ -1,9 +1,11 @@
 import { Button } from "@/components/ui/button";
-import { Link } from "react-router";
 import { apiEndpoints } from "@/constants/apiEndpoints";
 import logo from "@/assets/wealthcheck-logo.webp";
 import logoText from "@/assets/wealthcheck-text-logo.webp";
 import useIsMobile from "@/hooks/useIsMobile";
+import { Navigate } from "react-router";
+import { useAuth } from "@/hooks/useAuth";
+import { appRoute } from "@/constants/appRoutes";
 
 const GoogleIcon = () => {
   return (
@@ -37,6 +39,12 @@ const GoogleIcon = () => {
 
 const Home = () => {
   const isMobile = useIsMobile();
+  const { user, loading } = useAuth();
+
+  if (loading) return null;
+
+  if (user) return <Navigate to={appRoute.overview} replace />;
+
   return (
     <div className="min-h-dvh flex flex-col bg-gradient-to-br from-gray-50 via-white to-gray-100 relative overflow-hidden">
       <div className="absolute -top-24 -left-24 w-96 h-96 bg-primary/80 rounded-full blur-3xl" />
@@ -53,9 +61,9 @@ const Home = () => {
           asChild
           className="bg-primary text-white font-medium hover:bg-primary/90"
         >
-          <Link to={apiEndpoints.auth.googleLogin}>
+          <a href={apiEndpoints.auth.googleLogin}>
             <GoogleIcon /> {!isMobile && "Login with Google"}
-          </Link>
+          </a>
         </Button>
       </header>
 
@@ -74,7 +82,7 @@ const Home = () => {
             size="lg"
             className="w-fit mx-auto bg-primary text-white font-semibold shadow-md hover:scale-105 transition-transform"
           >
-            <Link to={apiEndpoints.auth.googleLogin}>Get Started</Link>
+            <a href={apiEndpoints.auth.googleLogin}>Get Started</a>
           </Button>
         </div>
       </main>
