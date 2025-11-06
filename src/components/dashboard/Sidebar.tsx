@@ -2,7 +2,7 @@ import { useState } from "react";
 import useIsMobile from "@/hooks/useIsMobile";
 import MobileNavBar from "./MobileNavBar";
 import NavBar from "./NavBar";
-import { menu } from "@/constants/constants";
+import { menu } from "@/constants/menu";
 
 const Sidebar = () => {
   const isMobile = useIsMobile();
