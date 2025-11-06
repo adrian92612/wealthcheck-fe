@@ -40,7 +40,7 @@ const TopTransactions = () => {
                   key={i}
                   className="border p-3 flex justify-between items-center shadow-sm hover:bg-forestGreen/20"
                 >
-                  <span className="font-medium">{tx.name}</span>
+                  <span className="font-medium">{tx.categoryName}</span>
                   <span className="text-green-600 font-semibold">
                     ₱ {tx.amount.toLocaleString()}
                   </span>
@@ -57,7 +57,7 @@ const TopTransactions = () => {
                   key={i}
                   className="border p-3 flex justify-between items-center shadow-sm hover:bg-forestGreen/20"
                 >
-                  <span className="font-medium">{tx.name}</span>
+                  <span className="font-medium">{tx.categoryName}</span>
                   <span className="text-red-600 font-semibold">
                     ₱ {tx.amount.toLocaleString()}
                   </span>

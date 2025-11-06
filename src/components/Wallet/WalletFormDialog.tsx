@@ -50,6 +50,7 @@ const WalletFormDialog = ({ wallet }: Props) => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["wallets"] });
+      form.reset();
       setOpen(false);
     },
     throwOnError: true,
@@ -110,11 +111,13 @@ const WalletFormDialog = ({ wallet }: Props) => {
                     <Input
                       {...field}
                       type="number"
-                      placeholder="1,000,000"
+                      value={field.value === 0 ? "" : field.value}
                       onChange={(e) => {
-                        field.onChange(Number(e.target.value));
+                        const value = e.target.value;
+                        field.onChange(value === "" ? 0 : Number(value));
                       }}
-                      value={field.value}
+                      min={0}
+                      placeholder="0.00"
                     />
                   </FormControl>
                   <FormMessage />

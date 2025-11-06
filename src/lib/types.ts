@@ -95,7 +95,7 @@ export type CurrentSummary = {
 
 export type TopTransaction = {
   type: TransactionType;
-  name: string;
+  categoryName: string;
   amount: number;
 };
 
