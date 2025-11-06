@@ -2,7 +2,7 @@ import type { Transaction } from "@/lib/types";
 import {
   noTransactionsExistMessages,
   noTransactionsForFilterMessages,
-} from "@/constants/constants";
+} from "@/constants/transactionMessages";
 import TransactionCard from "./TransactionCard";
 
 type Props = {

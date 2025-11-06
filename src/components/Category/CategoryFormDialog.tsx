@@ -65,6 +65,7 @@ const CategoryFormDialog = ({ category }: Props) => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["categories"] });
+      form.reset();
       setOpen(false);
     },
     throwOnError: true,

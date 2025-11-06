@@ -80,6 +80,7 @@ const TransactionFormDialog = ({ transaction, forType }: Props) => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["transactions"] });
+      form.reset();
       setOpen(false);
     },
     throwOnError: true,
@@ -327,10 +328,13 @@ const TransactionFormDialog = ({ transaction, forType }: Props) => {
                     <Input
                       {...field}
                       type="number"
+                      value={field.value === 0 ? "" : field.value}
                       onChange={(e) => {
-                        field.onChange(Number(e.target.value));
+                        const value = e.target.value;
+                        field.onChange(value === "" ? 0 : Number(value));
                       }}
                       min={0}
+                      placeholder="0.00"
                     />
                   </FormControl>
                   <FormMessage />

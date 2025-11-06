@@ -67,7 +67,7 @@ const Home = () => {
         </Button>
       </header>
 
-      <main className="flex-1 flex flex-col items-center justify-center px-6 text-center relative z-10">
+      <main className="flex-1 flex flex-col items-center justify-center px-6 py-10 text-center relative z-10">
         <div className="max-w-xl flex flex-col gap-6 bg-white/70 backdrop-blur-sm rounded-2xl shadow-lg p-8">
           <h1 className="text-4xl sm:text-5xl font-bold tracking-tight text-gray-900">
             Smarter Money Management
