@@ -49,7 +49,7 @@ const RecentTransactions = () => {
                 <div className="flex items-center gap-3">
                   <Circle className={cn("size-5 shrink-0", fontColor)} />
                   <div className="flex flex-col">
-                    <span className="font-medium">{tx.name}</span>
+                    <span className="font-medium">{tx.categoryName}</span>
                     <span className="text-xs text-muted-foreground">
                       {capitalizeFirstLetter(tx.type)}
                     </span>
