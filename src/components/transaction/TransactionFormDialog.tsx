@@ -71,7 +71,7 @@ const TransactionFormDialog = ({ transaction, forType }: Props) => {
   });
 
   const queryClient = useQueryClient();
-  const mutation = useMutation({
+  const { mutate, isPending } = useMutation({
     mutationFn: (data: TransactionFormData) => {
       if (transaction?.id) {
         return transactionApi.update(transaction.id, data);
@@ -87,7 +87,7 @@ const TransactionFormDialog = ({ transaction, forType }: Props) => {
   });
 
   const onSubmit = async (data: TransactionFormData) => {
-    mutation.mutate(data);
+    mutate(data);
   };
 
   const selectedType = form.watch("type");
@@ -133,216 +133,224 @@ const TransactionFormDialog = ({ transaction, forType }: Props) => {
         </DialogHeader>
 
         <Form {...form}>
-          <form
-            onSubmit={form.handleSubmit(onSubmit)}
-            className="flex flex-col gap-4"
-          >
-            <FormField
-              control={form.control}
-              name="type"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Type</FormLabel>
-                  <Select
-                    onValueChange={(val) => {
-                      field.onChange(val);
-                      form.setValue("fromWalletId", undefined);
-                      form.setValue("toWalletId", undefined);
-                    }}
-                    defaultValue={field.value}
-                  >
-                    <FormControl>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select the transaction type" />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      {transactionTypes.map((type, i) => (
-                        <SelectItem key={i} value={type}>
-                          {capitalizeFirstLetter(type)}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            {(selectedType === "EXPENSE" || selectedType == "TRANSFER") && (
+          <form onSubmit={form.handleSubmit(onSubmit)}>
+            <fieldset
+              disabled={isPending}
+              className="flex flex-col gap-4 disabled:opacity-70"
+            >
               <FormField
                 control={form.control}
-                name="fromWalletId"
+                name="type"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>From Wallet</FormLabel>
+                    <FormLabel>Type</FormLabel>
                     <Select
-                      onValueChange={(val) => field.onChange(Number(val))}
-                      value={field.value ? String(field.value) : ""}
-                    >
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select a Wallet" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        {wallets
-                          .filter((w) => String(w.id) !== String(toWalletId))
-                          .map((wallet) => (
-                            <SelectItem
-                              key={wallet.id}
-                              value={String(wallet.id)}
-                            >
-                              {capitalizeFirstLetter(wallet.name)}
-                            </SelectItem>
-                          ))}
-                      </SelectContent>
-                    </Select>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            )}
-
-            {(selectedType === "INCOME" || selectedType == "TRANSFER") && (
-              <FormField
-                control={form.control}
-                name="toWalletId"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>To Wallet</FormLabel>
-                    <Select
-                      onValueChange={(val) => field.onChange(Number(val))}
-                      value={field.value ? String(field.value) : ""}
-                    >
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select a Wallet" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        {wallets
-                          .filter((w) => String(w.id) !== String(fromWalletId))
-                          .map((wallet) => (
-                            <SelectItem
-                              key={wallet.id}
-                              value={String(wallet.id)}
-                            >
-                              {capitalizeFirstLetter(wallet.name)}
-                            </SelectItem>
-                          ))}
-                      </SelectContent>
-                    </Select>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            )}
-
-            {(selectedType === "EXPENSE" || selectedType === "INCOME") && (
-              <FormField
-                control={form.control}
-                name="categoryId"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Select a Category</FormLabel>
-                    <Select
-                      onValueChange={(val) =>
-                        field.onChange(val === "" ? undefined : Number(val))
-                      }
-                      value={
-                        field.value !== null && field.value !== undefined
-                          ? String(field.value)
-                          : ""
-                      }
-                    >
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select a Category" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        {categories
-                          .filter((category) => category.type === selectedType)
-                          .map((category) => (
-                            <SelectItem
-                              key={category.id}
-                              value={String(category.id)}
-                            >
-                              {capitalizeFirstLetter(category.name)}
-                            </SelectItem>
-                          ))}
-                      </SelectContent>
-                    </Select>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            )}
-
-            <FormField
-              control={form.control}
-              name="title"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Title</FormLabel>
-                  <FormControl>
-                    <Input
-                      {...field}
-                      placeholder={
-                        selectedType === "INCOME"
-                          ? "e.g. Salary, Gift, Bonus"
-                          : selectedType === "EXPENSE"
-                          ? "e.g. Groceries, Rent, Utilities"
-                          : selectedType === "TRANSFER"
-                          ? "e.g. Savings Transfer, Wallet Top-up"
-                          : "Enter a title"
-                      }
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="notes"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Notes</FormLabel>
-                  <FormControl>
-                    <Input {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
-              name="amount"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Amount</FormLabel>
-                  <FormControl>
-                    <Input
-                      {...field}
-                      type="number"
-                      value={field.value === 0 ? "" : field.value}
-                      onChange={(e) => {
-                        const value = e.target.value;
-                        field.onChange(value === "" ? 0 : Number(value));
+                      onValueChange={(val) => {
+                        field.onChange(val);
+                        form.setValue("fromWalletId", undefined);
+                        form.setValue("toWalletId", undefined);
                       }}
-                      min={0}
-                      placeholder="0.00"
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+                      defaultValue={field.value}
+                    >
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select the transaction type" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        {transactionTypes.map((type, i) => (
+                          <SelectItem key={i} value={type}>
+                            {capitalizeFirstLetter(type)}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
 
-            <Button type="submit">{transaction ? "Update" : "Submit"}</Button>
+              {(selectedType === "EXPENSE" || selectedType == "TRANSFER") && (
+                <FormField
+                  control={form.control}
+                  name="fromWalletId"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>From Wallet</FormLabel>
+                      <Select
+                        onValueChange={(val) => field.onChange(Number(val))}
+                        value={field.value ? String(field.value) : ""}
+                      >
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Select a Wallet" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          {wallets
+                            .filter((w) => String(w.id) !== String(toWalletId))
+                            .map((wallet) => (
+                              <SelectItem
+                                key={wallet.id}
+                                value={String(wallet.id)}
+                              >
+                                {capitalizeFirstLetter(wallet.name)}
+                              </SelectItem>
+                            ))}
+                        </SelectContent>
+                      </Select>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              )}
+
+              {(selectedType === "INCOME" || selectedType == "TRANSFER") && (
+                <FormField
+                  control={form.control}
+                  name="toWalletId"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>To Wallet</FormLabel>
+                      <Select
+                        onValueChange={(val) => field.onChange(Number(val))}
+                        value={field.value ? String(field.value) : ""}
+                      >
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Select a Wallet" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          {wallets
+                            .filter(
+                              (w) => String(w.id) !== String(fromWalletId)
+                            )
+                            .map((wallet) => (
+                              <SelectItem
+                                key={wallet.id}
+                                value={String(wallet.id)}
+                              >
+                                {capitalizeFirstLetter(wallet.name)}
+                              </SelectItem>
+                            ))}
+                        </SelectContent>
+                      </Select>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              )}
+
+              {(selectedType === "EXPENSE" || selectedType === "INCOME") && (
+                <FormField
+                  control={form.control}
+                  name="categoryId"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Select a Category</FormLabel>
+                      <Select
+                        onValueChange={(val) =>
+                          field.onChange(val === "" ? undefined : Number(val))
+                        }
+                        value={
+                          field.value !== null && field.value !== undefined
+                            ? String(field.value)
+                            : ""
+                        }
+                      >
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Select a Category" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          {categories
+                            .filter(
+                              (category) => category.type === selectedType
+                            )
+                            .map((category) => (
+                              <SelectItem
+                                key={category.id}
+                                value={String(category.id)}
+                              >
+                                {capitalizeFirstLetter(category.name)}
+                              </SelectItem>
+                            ))}
+                        </SelectContent>
+                      </Select>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              )}
+
+              <FormField
+                control={form.control}
+                name="title"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Title</FormLabel>
+                    <FormControl>
+                      <Input
+                        {...field}
+                        placeholder={
+                          selectedType === "INCOME"
+                            ? "e.g. Salary, Gift, Bonus"
+                            : selectedType === "EXPENSE"
+                            ? "e.g. Groceries, Rent, Utilities"
+                            : selectedType === "TRANSFER"
+                            ? "e.g. Savings Transfer, Wallet Top-up"
+                            : "Enter a title"
+                        }
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="notes"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Notes</FormLabel>
+                    <FormControl>
+                      <Input {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="amount"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Amount</FormLabel>
+                    <FormControl>
+                      <Input
+                        {...field}
+                        type="number"
+                        value={field.value === 0 ? "" : field.value}
+                        onChange={(e) => {
+                          const value = e.target.value;
+                          field.onChange(value === "" ? 0 : Number(value));
+                        }}
+                        min={0}
+                        placeholder="0.00"
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <Button type="submit" disabled={isPending}>
+                {transaction ? "Update" : "Submit"}
+              </Button>
+            </fieldset>
           </form>
         </Form>
       </DialogContent>

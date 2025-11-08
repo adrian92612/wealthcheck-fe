@@ -56,7 +56,7 @@ const CategoryFormDialog = ({ category }: Props) => {
     },
   });
   const queryClient = useQueryClient();
-  const mutation = useMutation({
+  const { mutate, isPending } = useMutation({
     mutationFn: (data: CategoryFormData) => {
       if (category?.id) {
         return categoryApi.update(category.id, data);
@@ -72,8 +72,9 @@ const CategoryFormDialog = ({ category }: Props) => {
   });
 
   const onSubmit = async (data: CategoryFormData) => {
-    mutation.mutate(data);
+    mutate(data);
   };
+
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
@@ -98,85 +99,89 @@ const CategoryFormDialog = ({ category }: Props) => {
           </DialogDescription>
         </DialogHeader>
         <Form {...form}>
-          <form
-            onSubmit={form.handleSubmit(onSubmit)}
-            className="flex flex-col gap-4"
-          >
-            <FormField
-              control={form.control}
-              name="name"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Name</FormLabel>
-                  <FormControl>
-                    <Input
-                      {...field}
-                      placeholder="eg. Utilities, Mortgage, Rent, etc."
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="description"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Description</FormLabel>
-                  <FormControl>
-                    <Input {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <div className="flex flex-wrap gap-5 items-start">
+          <form onSubmit={form.handleSubmit(onSubmit)}>
+            <fieldset
+              disabled={isPending}
+              className="flex flex-col gap-4 disabled:opacity-70"
+            >
               <FormField
                 control={form.control}
-                name="type"
+                name="name"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Type</FormLabel>
-                    <Select
-                      onValueChange={field.onChange}
-                      defaultValue={field.value}
-                    >
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select the category type" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        {categoryTypes.map((type, i) => (
-                          <SelectItem key={i} value={type}>
-                            {capitalizeFirstLetter(type)}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="icon"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Icon</FormLabel>
+                    <FormLabel>Name</FormLabel>
                     <FormControl>
-                      <IconPicker
-                        value={field.value as keyof typeof categoryIcons}
-                        onChange={field.onChange}
+                      <Input
+                        {...field}
+                        placeholder="eg. Utilities, Mortgage, Rent, etc."
                       />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
               />
-            </div>
-            <Button type="submit">{category ? "Update" : "Add"}</Button>
+              <FormField
+                control={form.control}
+                name="description"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Description</FormLabel>
+                    <FormControl>
+                      <Input {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <div className="flex flex-wrap gap-5 items-start">
+                <FormField
+                  control={form.control}
+                  name="type"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Type</FormLabel>
+                      <Select
+                        onValueChange={field.onChange}
+                        defaultValue={field.value}
+                      >
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Select the category type" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          {categoryTypes.map((type, i) => (
+                            <SelectItem key={i} value={type}>
+                              {capitalizeFirstLetter(type)}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="icon"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Icon</FormLabel>
+                      <FormControl>
+                        <IconPicker
+                          value={field.value as keyof typeof categoryIcons}
+                          onChange={field.onChange}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+              <Button type="submit" disabled={isPending}>
+                {category ? "Update" : "Add"}
+              </Button>
+            </fieldset>
           </form>
         </Form>
       </DialogContent>

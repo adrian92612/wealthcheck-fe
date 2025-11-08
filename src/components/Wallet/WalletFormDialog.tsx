@@ -41,7 +41,7 @@ const WalletFormDialog = ({ wallet }: Props) => {
     },
   });
   const queryClient = useQueryClient();
-  const mutation = useMutation({
+  const { mutate, isPending } = useMutation({
     mutationFn: (data: WalletFormData) => {
       if (wallet?.id) {
         return walletApi.update(wallet.id, data);
@@ -57,7 +57,7 @@ const WalletFormDialog = ({ wallet }: Props) => {
   });
 
   const onSubmit = async (data: WalletFormData) => {
-    mutation.mutate(data);
+    mutate(data);
   };
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -81,50 +81,54 @@ const WalletFormDialog = ({ wallet }: Props) => {
           <DialogDescription className="sr-only">Add Wallet</DialogDescription>
         </DialogHeader>
         <Form {...form}>
-          <form
-            onSubmit={form.handleSubmit(onSubmit)}
-            className="flex flex-col gap-4"
-          >
-            <FormField
-              control={form.control}
-              name="name"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Name</FormLabel>
-                  <FormControl>
-                    <Input
-                      {...field}
-                      placeholder="eg. Cash, Gcash, BPI, etc."
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="balance"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Balance</FormLabel>
-                  <FormControl>
-                    <Input
-                      {...field}
-                      type="number"
-                      value={field.value === 0 ? "" : field.value}
-                      onChange={(e) => {
-                        const value = e.target.value;
-                        field.onChange(value === "" ? 0 : Number(value));
-                      }}
-                      min={0}
-                      placeholder="0.00"
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <Button type="submit">{wallet ? "Update" : "Add"}</Button>
+          <form onSubmit={form.handleSubmit(onSubmit)}>
+            <fieldset
+              disabled={isPending}
+              className="flex flex-col gap-4 disabled:opacity-70"
+            >
+              <FormField
+                control={form.control}
+                name="name"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Name</FormLabel>
+                    <FormControl>
+                      <Input
+                        {...field}
+                        placeholder="eg. Cash, Gcash, BPI, etc."
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="balance"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Balance</FormLabel>
+                    <FormControl>
+                      <Input
+                        {...field}
+                        type="number"
+                        value={field.value === 0 ? "" : field.value}
+                        onChange={(e) => {
+                          const value = e.target.value;
+                          field.onChange(value === "" ? 0 : Number(value));
+                        }}
+                        min={0}
+                        placeholder="0.00"
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <Button type="submit" disabled={isPending}>
+                {wallet ? "Update" : "Add"}
+              </Button>
+            </fieldset>
           </form>
         </Form>
       </DialogContent>
