@@ -14,6 +14,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import { Button } from "../ui/button";
 import { walletApi } from "@/lib/api";
+import { toast } from "sonner";
 
 type Props = {
   wallet: Wallet;
@@ -27,6 +28,13 @@ const WalletDeleteBtn = ({ wallet }: Props) => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["wallets"] });
       setOpen(false);
+    },
+    onSettled: (res) => {
+      if (res?.success) {
+        toast.success(res.message);
+      } else {
+        toast.error(res?.message || "Something went wrong, try again later");
+      }
     },
     throwOnError: true,
   });

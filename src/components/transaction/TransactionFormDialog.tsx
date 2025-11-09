@@ -37,6 +37,7 @@ import type {
   Transaction,
 } from "@/lib/types";
 import { Plus } from "lucide-react";
+import { toast } from "sonner";
 
 type Props = {
   transaction?: Transaction;
@@ -83,6 +84,13 @@ const TransactionFormDialog = ({ transaction, forType }: Props) => {
       form.reset();
       setOpen(false);
     },
+    onSettled: (res) => {
+      if (res?.success) {
+        toast.success(res.message);
+      } else {
+        toast.error(res?.message || "Something went wrong, try again later");
+      }
+    },
     throwOnError: true,
   });
 
@@ -107,6 +115,13 @@ const TransactionFormDialog = ({ transaction, forType }: Props) => {
 
   const wallets = walletResp?.data;
   const categories = categoryResp?.data;
+  const btnText = isPending
+    ? transaction
+      ? "Updating..."
+      : "Submitting..."
+    : transaction
+    ? "Update"
+    : "Submit";
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -348,7 +363,7 @@ const TransactionFormDialog = ({ transaction, forType }: Props) => {
               />
 
               <Button type="submit" disabled={isPending}>
-                {transaction ? "Update" : "Submit"}
+                {btnText}
               </Button>
             </fieldset>
           </form>

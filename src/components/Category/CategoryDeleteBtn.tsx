@@ -14,6 +14,7 @@ import { useState } from "react";
 import { Button } from "../ui/button";
 import type { Category } from "@/lib/types";
 import { categoryApi } from "@/lib/api";
+import { toast } from "sonner";
 
 type Props = {
   category: Category;
@@ -27,6 +28,13 @@ const CategoryDeleteBtn = ({ category }: Props) => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["categories"] });
       setOpen(false);
+    },
+    onSettled: (res) => {
+      if (res?.success) {
+        toast.success(res.message);
+      } else {
+        toast.error(res?.message || "Something went wrong, try again later");
+      }
     },
     throwOnError: true,
   });
