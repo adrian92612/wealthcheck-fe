@@ -25,6 +25,7 @@ import { walletSchema } from "@/lib/schemas";
 import { walletApi } from "@/lib/api";
 import { Plus } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { toast } from "sonner";
 
 type Props = {
   wallet?: Wallet;
@@ -53,12 +54,27 @@ const WalletFormDialog = ({ wallet }: Props) => {
       form.reset();
       setOpen(false);
     },
+    onSettled: (res) => {
+      if (res?.success) {
+        toast.success(res.message);
+      } else {
+        toast.error(res?.message || "Something went wrong, try again later");
+      }
+    },
     throwOnError: true,
   });
 
   const onSubmit = async (data: WalletFormData) => {
     mutate(data);
   };
+
+  const btnText = isPending
+    ? wallet
+      ? "Updating..."
+      : "Submitting..."
+    : wallet
+    ? "Update"
+    : "Submit";
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
@@ -126,7 +142,7 @@ const WalletFormDialog = ({ wallet }: Props) => {
                 )}
               />
               <Button type="submit" disabled={isPending}>
-                {wallet ? "Update" : "Add"}
+                {btnText}
               </Button>
             </fieldset>
           </form>

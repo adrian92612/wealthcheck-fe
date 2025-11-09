@@ -14,6 +14,7 @@ import { useState } from "react";
 import { Button } from "../ui/button";
 import type { Transaction } from "@/lib/types";
 import { transactionApi } from "@/lib/api";
+import { toast } from "sonner";
 
 type Props = {
   transaction: Transaction;
@@ -27,6 +28,13 @@ const TransactionDeleteBtn = ({ transaction }: Props) => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["transactions"] });
       setOpen(false);
+    },
+    onSettled: (res) => {
+      if (res?.success) {
+        toast.success(res.message);
+      } else {
+        toast.error(res?.message || "Something went wrong, try again later");
+      }
     },
     throwOnError: true,
   });

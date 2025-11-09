@@ -38,6 +38,7 @@ import type { categoryIcons } from "@/constants/categoryIcons";
 import { categoryApi } from "@/lib/api";
 import { capitalizeFirstLetter, cn } from "@/lib/utils";
 import { Plus } from "lucide-react";
+import { toast } from "sonner";
 
 type Props = {
   category?: Category;
@@ -68,12 +69,27 @@ const CategoryFormDialog = ({ category }: Props) => {
       form.reset();
       setOpen(false);
     },
+    onSettled: (res) => {
+      if (res?.success) {
+        toast.success(res.message);
+      } else {
+        toast.error(res?.message || "Something went wrong, try again later");
+      }
+    },
     throwOnError: true,
   });
 
   const onSubmit = async (data: CategoryFormData) => {
     mutate(data);
   };
+
+  const btnText = isPending
+    ? category
+      ? "Updating..."
+      : "Submitting..."
+    : category
+    ? "Update"
+    : "Submit";
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -179,7 +195,7 @@ const CategoryFormDialog = ({ category }: Props) => {
                 />
               </div>
               <Button type="submit" disabled={isPending}>
-                {category ? "Update" : "Add"}
+                {btnText}
               </Button>
             </fieldset>
           </form>
