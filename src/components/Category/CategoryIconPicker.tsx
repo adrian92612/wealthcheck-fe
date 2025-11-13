@@ -18,7 +18,7 @@ const IconPicker = ({ value, onChange }: IconPickerProps) => {
   const SelectedIcon = value ? categoryIcons[value] : null;
 
   return (
-    <Popover open={open} onOpenChange={setOpen}>
+    <Popover open={open} onOpenChange={setOpen} modal>
       <PopoverTrigger asChild>
         <Button variant="outline" className="flex items-center gap-2 w-fit">
           {SelectedIcon ? (
@@ -30,8 +30,8 @@ const IconPicker = ({ value, onChange }: IconPickerProps) => {
           )}
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-80 max-h-80 overflow-y-auto">
-        <div className="grid grid-cols-6 gap-3">
+      <PopoverContent className="w-80 overflow-y-auto">
+        <div className="grid grid-cols-6 gap-3 overflow-y-auto max-h-80">
           {Object.entries(categoryIcons).map(([key, Icon]) => (
             <Button
               key={key}
