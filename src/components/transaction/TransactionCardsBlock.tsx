@@ -1,9 +1,17 @@
 import type { Transaction } from "@/lib/types";
-import {
-  noTransactionsExistMessages,
-  noTransactionsForFilterMessages,
-} from "@/constants/transactionMessages";
 import TransactionCard from "./TransactionCard";
+
+const noTransactionsExistMessages = [
+  "All quiet here… your money is behaving.",
+  "Your ledger is spotless. Keep it up!",
+  "Nothing to see… your wallets are lonely.",
+];
+
+const noTransactionsForFilterMessages = [
+  "No transactions match your filter. Try adjusting it.",
+  "Zero results… maybe broaden your search?",
+  "Your filter is strict! No transactions found.",
+];
 
 type Props = {
   transactions: Transaction[];

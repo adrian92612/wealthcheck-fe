@@ -68,12 +68,14 @@ const TransactionList = () => {
         totalItems={txResp.data.totalItems}
       />
 
-      <TransactionPageControl
-        filter={filter}
-        txResp={txResp.data}
-        handlePageChange={handlePageChange}
-        handlePageSizeChange={handlePageSizeChange}
-      />
+      {!!txResp.data.totalPages && (
+        <TransactionPageControl
+          filter={filter}
+          txResp={txResp.data}
+          handlePageChange={handlePageChange}
+          handlePageSizeChange={handlePageSizeChange}
+        />
+      )}
     </div>
   );
 };
