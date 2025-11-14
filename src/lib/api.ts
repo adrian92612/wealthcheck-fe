@@ -8,7 +8,6 @@ import type {
   Transaction,
   TransactionFormData,
   CurrentSummary,
-  TopTransaction,
   OverviewTopTransaction,
   TransactionFilterResType,
 } from "./types";
@@ -31,7 +30,7 @@ export const overviewApi = {
   getCurrentSummary: () =>
     apiFetch<CurrentSummary>(apiEndpoints.currentSummary),
   getRecentTransactions: () =>
-    apiFetch<TopTransaction[]>(apiEndpoints.recentTransactions),
+    apiFetch<Transaction[]>(apiEndpoints.recentTransactions),
   getTopTransactions: () =>
     apiFetch<OverviewTopTransaction>(apiEndpoints.topTransactions),
 };

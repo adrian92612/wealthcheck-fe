@@ -93,13 +93,7 @@ export type CurrentSummary = {
   netCashFlow: number;
 };
 
-export type TopTransaction = {
-  type: TransactionType;
-  categoryName: string;
-  amount: number;
-};
-
 export type OverviewTopTransaction = {
-  topIncome: TopTransaction[];
-  topExpense: TopTransaction[];
+  topIncome: Transaction[];
+  topExpense: Transaction[];
 };
