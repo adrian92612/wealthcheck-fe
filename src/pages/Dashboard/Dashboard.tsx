@@ -1,4 +1,4 @@
-import { Navigate, Outlet } from "react-router";
+import { Navigate, Outlet, useLocation } from "react-router";
 import Sidebar from "@/components/dashboard/Sidebar";
 import useIsMobile from "@/hooks/useIsMobile";
 import DashboardSkeleton from "@/components/skeleton/DashboardSkeleton";
@@ -8,9 +8,16 @@ import { appRoute } from "@/constants/appRoutes";
 const Dashboard = () => {
   const { user, loading } = useAuth();
   const isMobile = useIsMobile();
+  const location = useLocation();
 
   if (loading) return <DashboardSkeleton />;
   if (!user) return <Navigate to={appRoute.home} replace />;
+
+  const isOnWallet = location.pathname.startsWith(appRoute.wallet);
+
+  if (user.isNewUser && !isOnWallet) {
+    return <Navigate to={appRoute.wallet} replace />;
+  }
 
   return (
     <div className="min-h-dvh flex w-full">

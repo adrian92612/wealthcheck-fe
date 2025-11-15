@@ -20,7 +20,6 @@ import { Input } from "../ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import type { Wallet, WalletFormData } from "@/lib/types";
-import { useState } from "react";
 import { walletSchema } from "@/lib/schemas";
 import { walletApi } from "@/lib/api";
 import { Plus } from "lucide-react";
@@ -29,10 +28,17 @@ import { toast } from "sonner";
 
 type Props = {
   wallet?: Wallet;
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+  refreshUser: () => void;
 };
 
-const WalletFormDialog = ({ wallet }: Props) => {
-  const [open, setOpen] = useState<boolean>(false);
+const WalletFormDialog = ({
+  wallet,
+  open,
+  onOpenChange,
+  refreshUser,
+}: Props) => {
   const form = useForm<WalletFormData>({
     resolver: zodResolver(walletSchema),
     mode: "all",
@@ -52,7 +58,8 @@ const WalletFormDialog = ({ wallet }: Props) => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["wallets"] });
       form.reset();
-      setOpen(false);
+      refreshUser();
+      onOpenChange(false);
     },
     onSettled: (res) => {
       if (res?.success) {
@@ -76,7 +83,7 @@ const WalletFormDialog = ({ wallet }: Props) => {
     ? "Update"
     : "Submit";
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
+    <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogTrigger asChild>
         <Button
           variant={wallet ? "ghost" : "default"}

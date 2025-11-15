@@ -34,7 +34,7 @@ const TopTransactions = () => {
       <CardContent>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
-            <h3 className="font-semibold mb-2 text-green-600">Top Income</h3>
+            <h3 className="font-semibold mb-2 text-green-600">Income</h3>
             <div className="space-y-2">
               {data.topIncome.map((tx) => (
                 <TransactionCard key={tx.id} tx={tx} />
@@ -43,7 +43,7 @@ const TopTransactions = () => {
           </div>
 
           <div>
-            <h3 className="font-semibold mb-2 text-red-600">Top Expense</h3>
+            <h3 className="font-semibold mb-2 text-red-600">Expense</h3>
             <div className="space-y-2">
               {data.topExpense.map((tx) => (
                 <TransactionCard key={tx.id} tx={tx} />
