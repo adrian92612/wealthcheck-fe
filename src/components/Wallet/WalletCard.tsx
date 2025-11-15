@@ -13,11 +13,13 @@ import {
 } from "../ui/dropdown-menu";
 import WalletFormDialog from "./WalletFormDialog";
 import WalletDeleteBtn from "./WalletDeleteBtn";
+import { useState } from "react";
 
 type Props = {
   wallet: Wallet;
 };
 const WalletCard = ({ wallet }: Props) => {
+  const [openWallet, setOpenWallet] = useState(false);
   return (
     <Card className="rounded-xl shadow-lg border-l-2 border-primary bg-background">
       <CardHeader>
@@ -39,7 +41,12 @@ const WalletCard = ({ wallet }: Props) => {
               </DropdownMenuLabel>
               <DropdownMenuSeparator />
               <DropdownMenuItem asChild>
-                <WalletFormDialog wallet={wallet} />
+                <WalletFormDialog
+                  wallet={wallet}
+                  open={openWallet}
+                  onOpenChange={setOpenWallet}
+                  refreshUser={() => {}}
+                />
               </DropdownMenuItem>
               <DropdownMenuItem asChild>
                 <WalletDeleteBtn wallet={wallet} />
