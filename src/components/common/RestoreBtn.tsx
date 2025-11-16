@@ -9,51 +9,52 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "../ui/alert-dialog";
+import type { ApiResponse } from "@/lib/apiClient";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
-import { Button } from "../ui/button";
-import type { Category } from "@/lib/types";
-import { categoryApi } from "@/lib/api";
 import { toast } from "sonner";
+import { Button } from "../ui/button";
 
 type Props = {
-  category: Category;
+  id: string | number;
+  label: string;
+  name: string;
+  restoreFn: (id: string | number) => Promise<ApiResponse<unknown>>;
+  invalidateKeys: string[][];
 };
 
-const CategoryDeleteBtn = ({ category }: Props) => {
-  const [open, setOpen] = useState<boolean>(false);
-  const queryClient = useQueryClient();
+const RestoreBtn = ({ id, label, name, restoreFn, invalidateKeys }: Props) => {
+  const [open, setOpen] = useState(false);
+  const qc = useQueryClient();
+
   const mutation = useMutation({
-    mutationFn: () => categoryApi.delete(category.id),
+    mutationFn: () => restoreFn(id),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["categories"] });
+      invalidateKeys.forEach((key) => qc.invalidateQueries({ queryKey: key }));
       setOpen(false);
     },
     onSettled: (res) => {
-      if (res?.success) {
-        toast.success(res.message);
-      } else {
-        toast.error(res?.message || "Something went wrong, try again later");
-      }
+      if (res?.success) toast.success(res.message);
+      else toast.error(res?.message || "Something went wrong, try again later");
     },
     throwOnError: true,
   });
-
   return (
     <AlertDialog open={open} onOpenChange={setOpen}>
       <AlertDialogTrigger asChild>
         <Button variant="ghost" className="w-full rounded-none">
-          Delete
+          Restore
         </Button>
       </AlertDialogTrigger>
+
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
           <AlertDialogDescription>
-            This action cannot be undone. This will permanently delete this
-            category. - {category.name}
+            <p className="mb-4">Restore this {label.toLowerCase()}?</p>- {name}
           </AlertDialogDescription>
         </AlertDialogHeader>
+
         <AlertDialogFooter>
           <AlertDialogCancel disabled={mutation.isPending}>
             Cancel
@@ -70,4 +71,4 @@ const CategoryDeleteBtn = ({ category }: Props) => {
   );
 };
 
-export default CategoryDeleteBtn;
+export default RestoreBtn;

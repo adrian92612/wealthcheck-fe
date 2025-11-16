@@ -10,10 +10,11 @@ import {
 import type { OverviewTopTransaction } from "@/lib/types";
 import TopTransactionSkeleton from "../skeleton/TopTransactionSkeleton";
 import TransactionCard from "../transaction/TransactionCard";
+import { qCacheKey } from "@/constants/queryKeys";
 
 const TopTransactions = () => {
   const { data: res, isPending } = useQuery({
-    queryKey: ["topTransactions"],
+    queryKey: qCacheKey.topTransactions,
     queryFn: overviewApi.getTopTransactions,
     throwOnError: true,
   });

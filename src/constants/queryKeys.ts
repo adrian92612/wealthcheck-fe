@@ -1,0 +1,11 @@
+export const qCacheKey = {
+  transactions: ["transactions"],
+  wallets: ["wallets"],
+  categories: ["categories"],
+  trashedTransactions: ["trashedTransactions"],
+  currentSummary: ["currentSummary"],
+  recentTransactions: ["recentTransactions"],
+  topTransactions: ["topTransactions"],
+  trashedWallets: ["trashedWallets"],
+  trashedCategories: ["trashedCategories"],
+};

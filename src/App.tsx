@@ -6,7 +6,8 @@ import NotFound from "./pages/NotFound";
 import Wallet from "./pages/Dashboard/Wallet";
 import Category from "./pages/Dashboard/Category";
 import Transaction from "./pages/Dashboard/Transaction";
-import PageTitleUpdater from "./components/PageTitleUpdater";
+import PageTitleUpdater from "./components/common/PageTitleUpdater";
+import Trash from "./pages/Dashboard/Trash";
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
           <Route path="transaction" element={<Transaction />} />
           <Route path="wallet" element={<Wallet />} />
           <Route path="category" element={<Category />} />
+          <Route path="trash" element={<Trash />} />
           <Route path="*" element={<NotFound />} />
         </Route>
 

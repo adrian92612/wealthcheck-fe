@@ -7,4 +7,5 @@ export const appRoute = {
   wallet: dashboard + "/wallet",
   category: dashboard + "/category",
   goals: dashboard + "/goals",
+  trash: dashboard + "/trash",
 };

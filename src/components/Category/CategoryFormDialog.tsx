@@ -39,12 +39,14 @@ import { categoryApi } from "@/lib/api";
 import { capitalizeFirstLetter, cn } from "@/lib/utils";
 import { Plus } from "lucide-react";
 import { toast } from "sonner";
+import { qCacheKey } from "@/constants/queryKeys";
 
 type Props = {
   category?: Category;
+  closeDropDown?: () => void;
 };
 
-const CategoryFormDialog = ({ category }: Props) => {
+const CategoryFormDialog = ({ category, closeDropDown }: Props) => {
   const [open, setOpen] = useState<boolean>(false);
   const form = useForm<CategoryFormData>({
     resolver: zodResolver(categorySchema),
@@ -65,8 +67,8 @@ const CategoryFormDialog = ({ category }: Props) => {
       return categoryApi.create(data);
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["categories"] });
-      form.reset();
+      queryClient.invalidateQueries({ queryKey: qCacheKey.categories });
+      if (!category) form.reset();
       setOpen(false);
     },
     onSettled: (res) => {
@@ -75,6 +77,7 @@ const CategoryFormDialog = ({ category }: Props) => {
       } else {
         toast.error(res?.message || "Something went wrong, try again later");
       }
+      if (closeDropDown) closeDropDown();
     },
     throwOnError: true,
   });

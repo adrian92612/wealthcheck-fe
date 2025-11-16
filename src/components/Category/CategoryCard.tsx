@@ -19,17 +19,26 @@ import { capitalizeFirstLetter, cn } from "@/lib/utils";
 import { MoreVertical, type LucideIcon } from "lucide-react";
 import { Button } from "../ui/button";
 import CategoryFormDialog from "./CategoryFormDialog";
-import CategoryDeleteBtn from "./CategoryDeleteBtn";
+import { useTrash } from "@/hooks/useIsTrash";
+import RestoreBtn from "../common/RestoreBtn";
+import { categoryApi } from "@/lib/api";
+import { qCacheKey } from "@/constants/queryKeys";
+import DeleteBtn from "../common/DeleteBtn";
+import { useState } from "react";
 
 type Props = {
   category: Category;
 };
 
 const CategoryCard = ({ category }: Props) => {
+  const [openDropDown, setOpenDropDown] = useState(false);
+  const { forSoftDeleted } = useTrash();
+  const keysToInvalidate = [qCacheKey.categories, qCacheKey.trashedCategories];
   const Icon: LucideIcon =
     category.icon && categoryIcons[category.icon as keyof typeof categoryIcons]
       ? categoryIcons[category.icon as keyof typeof categoryIcons]
       : categoryIcons["tag"];
+
   return (
     <Card className="gap-2 py-4">
       <CardHeader>
@@ -40,7 +49,7 @@ const CategoryCard = ({ category }: Props) => {
               {category.description}
             </CardDescription>
           </div>
-          <DropdownMenu>
+          <DropdownMenu open={openDropDown} onOpenChange={setOpenDropDown}>
             <DropdownMenuTrigger asChild className="hover:cursor-pointer">
               <Button
                 variant="ghost"
@@ -56,10 +65,30 @@ const CategoryCard = ({ category }: Props) => {
               </DropdownMenuLabel>
               <DropdownMenuSeparator />
               <DropdownMenuItem asChild>
-                <CategoryFormDialog category={category} />
+                {forSoftDeleted ? (
+                  <RestoreBtn
+                    id={category.id}
+                    label="category"
+                    name={category.name}
+                    restoreFn={categoryApi.restore}
+                    invalidateKeys={keysToInvalidate}
+                  />
+                ) : (
+                  <CategoryFormDialog
+                    category={category}
+                    closeDropDown={() => setOpenDropDown(false)}
+                  />
+                )}
               </DropdownMenuItem>
               <DropdownMenuItem asChild>
-                <CategoryDeleteBtn category={category} />
+                <DeleteBtn
+                  id={category.id}
+                  label="category"
+                  name={category.name}
+                  softDeleteFn={categoryApi.delete}
+                  deleteFn={categoryApi.permanentDelete}
+                  invalidateKeys={keysToInvalidate}
+                />
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
