@@ -7,18 +7,27 @@ import TransactionPageControl from "./TransactionPageControl";
 import TransactionCardsBlock from "./TransactionCardsBlock";
 import TransactionListSkeleton from "../skeleton/TransactionListSkeleton";
 import { initialFilter } from "./constants";
+import { useTrash } from "@/hooks/useIsTrash";
+import { qCacheKey } from "@/constants/queryKeys";
 
 const TransactionList = () => {
   const [filter, setFilter] = useState<TransactionFilterType>(initialFilter);
+  const { forSoftDeleted } = useTrash();
 
   const queryClient = useQueryClient();
+  const qKey = forSoftDeleted
+    ? qCacheKey.trashedTransactions
+    : qCacheKey.transactions;
   const {
     data: txResp,
     isPending: txPending,
     refetch,
   } = useQuery({
-    queryKey: ["transactions"],
-    queryFn: () => transactionApi.fetchAll(filter),
+    queryKey: qKey,
+    queryFn: () =>
+      forSoftDeleted
+        ? transactionApi.fetchAllTrashed(filter)
+        : transactionApi.fetchAll(filter),
     throwOnError: true,
   });
 
@@ -34,7 +43,7 @@ const TransactionList = () => {
   const handleReset = () => {
     setFilter(initialFilter);
     transactionApi.fetchAll(initialFilter).then((data) => {
-      queryClient.setQueryData(["transactions"], data);
+      queryClient.setQueryData([qKey], data);
     });
   };
 
@@ -42,7 +51,7 @@ const TransactionList = () => {
     const newFilter = { ...filter, page: newPage };
     setFilter(newFilter);
     transactionApi.fetchAll(newFilter).then((data) => {
-      queryClient.setQueryData(["transactions"], data);
+      queryClient.setQueryData([qKey], data);
     });
   };
 
@@ -50,12 +59,12 @@ const TransactionList = () => {
     const newFilter = { ...filter, size, page: 1 };
     setFilter(newFilter);
     transactionApi.fetchAll(newFilter).then((data) => {
-      queryClient.setQueryData(["transactions"], data);
+      queryClient.setQueryData([qKey], data);
     });
   };
 
   return (
-    <div className="flex flex-col gap-5 py-5">
+    <div className="flex flex-col gap-5 pb-5">
       <TransactionFilters
         filter={filter}
         onFilterChange={handleFilterChange}

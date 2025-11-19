@@ -1,5 +1,10 @@
 import { formatNumber } from "@/lib/utils";
-import { ArrowLeftRight, MoreVertical } from "lucide-react";
+import {
+  ArrowLeftRight,
+  LucideTag,
+  LucideWallet,
+  MoreVertical,
+} from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -9,19 +14,76 @@ import {
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
 import TransactionFormDialog from "./TransactionFormDialog";
-import TransactionDeleteBtn from "./TransactionDeleteBtn";
 import type { Transaction } from "@/lib/types";
 import { categoryIcons } from "@/constants/categoryIcons";
 import { format } from "date-fns/format";
 import { Button } from "../ui/button";
+import { useTrash } from "@/hooks/useIsTrash";
+import RestoreBtn from "../common/RestoreBtn";
+import { transactionApi } from "@/lib/api";
+import { qCacheKey } from "@/constants/queryKeys";
+import DeleteBtn from "../common/DeleteBtn";
+import { useState } from "react";
+
+const DeletedMarker = ({ what }: { what: "Wallet" | "Category" }) => (
+  <span className="text-red-500 italic flex items-center gap-1">
+    {what === "Category" ? (
+      <LucideTag className="size-3" />
+    ) : (
+      <LucideWallet className="size-3" />
+    )}
+    <span className="sr-only">{what} deleted</span>
+  </span>
+);
+
+const labelOrDeleted = (
+  name: string | null | undefined,
+  id: number | null | undefined,
+  type: "Wallet" | "Category"
+) => {
+  if (name) return name;
+  if (id != null) return <DeletedMarker what={type} />;
+  return null;
+};
 
 type Props = {
   tx: Transaction;
 };
+
 const TransactionCard = ({ tx }: Props) => {
+  const [dropDownOpen, setDropDownOpen] = useState(false);
+  const { forSoftDeleted } = useTrash();
+  const keysToInvalidate = [
+    qCacheKey.transactions,
+    qCacheKey.trashedTransactions,
+  ];
+
   const Icon = tx.categoryIcon
     ? categoryIcons[tx.categoryIcon as keyof typeof categoryIcons]
     : null;
+
+  const hasDeletedWallet =
+    (tx.fromWalletId != null && !tx.fromWalletName) ||
+    (tx.toWalletId != null && !tx.toWalletName);
+
+  const categoryLabel = labelOrDeleted(
+    tx.categoryName,
+    tx.categoryId,
+    "Category"
+  );
+  const fromLabel = labelOrDeleted(
+    tx.fromWalletName,
+    tx.fromWalletId,
+    "Wallet"
+  );
+  const toLabel = labelOrDeleted(tx.toWalletName, tx.toWalletId, "Wallet");
+
+  const walletLabel =
+    tx.type === "INCOME"
+      ? toLabel
+      : tx.type === "EXPENSE"
+      ? fromLabel
+      : `${fromLabel} → ${toLabel}`;
 
   return (
     <div className="flex items-center justify-between rounded-sm border p-3 shadow-sm">
@@ -37,12 +99,12 @@ const TransactionCard = ({ tx }: Props) => {
         <div>
           <p className="font-medium">{tx.title}</p>
           {tx.type === "TRANSFER" ? (
-            <p className="text-sm text-muted-foreground">
-              {tx.fromWalletName} → {tx.toWalletName}
+            <p className="text-sm text-muted-foreground inline-flex gap-1">
+              {fromLabel} → {toLabel}
             </p>
           ) : (
-            <p className="text-sm text-muted-foreground">
-              {tx.categoryName} • {tx.fromWalletName || tx.toWalletName}
+            <p className="text-sm text-muted-foreground inline-flex gap-1">
+              {categoryLabel} • {walletLabel}
             </p>
           )}
         </div>
@@ -66,7 +128,8 @@ const TransactionCard = ({ tx }: Props) => {
             {format(new Date(tx.createdAt), "MMM d, yyyy")}
           </p>
         </div>
-        <DropdownMenu>
+
+        <DropdownMenu open={dropDownOpen} onOpenChange={setDropDownOpen}>
           <DropdownMenuTrigger asChild className="hover:cursor-pointer">
             <Button
               variant="ghost"
@@ -82,10 +145,31 @@ const TransactionCard = ({ tx }: Props) => {
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuItem asChild>
-              <TransactionFormDialog transaction={tx} />
+              {forSoftDeleted ? (
+                <RestoreBtn
+                  id={tx.id}
+                  label="transaction"
+                  name={tx.title}
+                  restoreFn={transactionApi.restore}
+                  invalidateKeys={keysToInvalidate}
+                />
+              ) : (
+                <TransactionFormDialog
+                  transaction={tx}
+                  hasDeletedWallet={hasDeletedWallet}
+                  closeDropDown={() => setDropDownOpen(false)}
+                />
+              )}
             </DropdownMenuItem>
             <DropdownMenuItem asChild>
-              <TransactionDeleteBtn transaction={tx} />
+              <DeleteBtn
+                id={tx.id}
+                label="transaction"
+                name={tx.title}
+                softDeleteFn={transactionApi.delete}
+                deleteFn={transactionApi.permanentDelete}
+                invalidateKeys={keysToInvalidate}
+              />
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

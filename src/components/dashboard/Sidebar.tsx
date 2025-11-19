@@ -9,6 +9,7 @@ import {
   LucideHome,
   LucideTag,
   LucideWallet,
+  LucideTrash,
 } from "lucide-react";
 
 const menu: Menu[] = [
@@ -20,6 +21,7 @@ const menu: Menu[] = [
   },
   { label: "Wallet", link: appRoute.wallet, icon: LucideWallet },
   { label: "Category", link: appRoute.category, icon: LucideTag },
+  { label: "Trash", link: appRoute.trash, icon: LucideTrash },
   // { label: "Goals", link: appRoute.goals, icon: LucideTarget },
 ];
 

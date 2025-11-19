@@ -1,13 +1,13 @@
 import { overviewApi } from "@/lib/api";
 import { useQuery } from "@tanstack/react-query";
-
 import { Wallet, ArrowUpCircle, ArrowDownCircle, Activity } from "lucide-react";
 import StatCard from "./StatCard";
 import CurrentSummarySkeleton from "../skeleton/CurrentSummarySkeleton";
+import { qCacheKey } from "@/constants/queryKeys";
 
 const CurrentSummary = () => {
   const { data: response, isPending } = useQuery({
-    queryKey: ["currentSummary"],
+    queryKey: qCacheKey.currentSummary,
     queryFn: overviewApi.getCurrentSummary,
     throwOnError: true,
   });

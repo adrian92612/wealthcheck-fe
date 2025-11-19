@@ -12,20 +12,27 @@ import {
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
 import WalletFormDialog from "./WalletFormDialog";
-import WalletDeleteBtn from "./WalletDeleteBtn";
 import { useState } from "react";
+import DeleteBtn from "../common/DeleteBtn";
+import { walletApi } from "@/lib/api";
+import { qCacheKey } from "@/constants/queryKeys";
+import { useTrash } from "@/hooks/useIsTrash";
+import RestoreBtn from "../common/RestoreBtn";
 
 type Props = {
   wallet: Wallet;
 };
 const WalletCard = ({ wallet }: Props) => {
   const [openWallet, setOpenWallet] = useState(false);
+  const [openDropDrown, setOpenDropDown] = useState(false);
+  const { forSoftDeleted } = useTrash();
+  const keysToInvalidate = [qCacheKey.wallets, qCacheKey.trashedWallets];
   return (
     <Card className="rounded-xl shadow-lg border-l-2 border-primary bg-background">
       <CardHeader>
         <div className="flex justify-between items-center">
           <CardTitle className="text-lg font-semibold">{wallet.name}</CardTitle>
-          <DropdownMenu>
+          <DropdownMenu open={openDropDrown} onOpenChange={setOpenDropDown}>
             <DropdownMenuTrigger asChild className="hover:cursor-pointer">
               <Button
                 variant="ghost"
@@ -41,15 +48,33 @@ const WalletCard = ({ wallet }: Props) => {
               </DropdownMenuLabel>
               <DropdownMenuSeparator />
               <DropdownMenuItem asChild>
-                <WalletFormDialog
-                  wallet={wallet}
-                  open={openWallet}
-                  onOpenChange={setOpenWallet}
-                  refreshUser={() => {}}
-                />
+                {forSoftDeleted ? (
+                  <RestoreBtn
+                    id={wallet.id}
+                    label="wallet"
+                    name={wallet.name}
+                    restoreFn={walletApi.restore}
+                    invalidateKeys={keysToInvalidate}
+                  />
+                ) : (
+                  <WalletFormDialog
+                    wallet={wallet}
+                    open={openWallet}
+                    onOpenChange={setOpenWallet}
+                    refreshUser={() => {}}
+                    closeDropDown={() => setOpenDropDown(false)}
+                  />
+                )}
               </DropdownMenuItem>
               <DropdownMenuItem asChild>
-                <WalletDeleteBtn wallet={wallet} />
+                <DeleteBtn
+                  id={wallet.id}
+                  label="wallet"
+                  name={wallet.name}
+                  softDeleteFn={walletApi.delete}
+                  deleteFn={walletApi.permanentDelete}
+                  invalidateKeys={keysToInvalidate}
+                />
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>

@@ -10,10 +10,11 @@ import {
 import type { Transaction } from "@/lib/types";
 import RecentTransactionSkeleton from "../skeleton/RecentTransactionSkeleton";
 import TransactionCard from "../transaction/TransactionCard";
+import { qCacheKey } from "@/constants/queryKeys";
 
 const RecentTransactions = () => {
   const { data: res, isPending } = useQuery({
-    queryKey: ["recentTransactions"],
+    queryKey: qCacheKey.recentTransactions,
     queryFn: overviewApi.getRecentTransactions,
     throwOnError: true,
   });

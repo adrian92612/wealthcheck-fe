@@ -38,13 +38,21 @@ import type {
 } from "@/lib/types";
 import { Plus } from "lucide-react";
 import { toast } from "sonner";
+import { qCacheKey } from "@/constants/queryKeys";
 
 type Props = {
   transaction?: Transaction;
   forType?: TransactionType;
+  hasDeletedWallet?: boolean;
+  closeDropDown?: () => void;
 };
 
-const TransactionFormDialog = ({ transaction, forType }: Props) => {
+const TransactionFormDialog = ({
+  transaction,
+  forType,
+  hasDeletedWallet = false,
+  closeDropDown,
+}: Props) => {
   const [open, setOpen] = useState<boolean>(false);
   const form = useForm<TransactionFormData>({
     resolver: zodResolver(transactionSchema),
@@ -60,13 +68,13 @@ const TransactionFormDialog = ({ transaction, forType }: Props) => {
   });
 
   const { data: walletResp, isLoading: walletsLoading } = useQuery({
-    queryKey: ["wallets"],
+    queryKey: qCacheKey.wallets,
     queryFn: () => walletApi.fetchAll(),
     throwOnError: true,
   });
 
   const { data: categoryResp, isLoading: categoriesLoading } = useQuery({
-    queryKey: ["categories"],
+    queryKey: qCacheKey.categories,
     queryFn: () => categoryApi.fetchAll(),
     throwOnError: true,
   });
@@ -80,9 +88,9 @@ const TransactionFormDialog = ({ transaction, forType }: Props) => {
       return transactionApi.create(data);
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["transactions"] });
-      form.reset();
+      queryClient.invalidateQueries({ queryKey: qCacheKey.transactions });
       setOpen(false);
+      if (!transaction) form.reset();
     },
     onSettled: (res) => {
       if (res?.success) {
@@ -90,6 +98,7 @@ const TransactionFormDialog = ({ transaction, forType }: Props) => {
       } else {
         toast.error(res?.message || "Something went wrong, try again later");
       }
+      if (closeDropDown) closeDropDown();
     },
     throwOnError: true,
   });
@@ -128,6 +137,7 @@ const TransactionFormDialog = ({ transaction, forType }: Props) => {
       <DialogTrigger asChild>
         <Button
           variant={transaction ? "ghost" : "default"}
+          disabled={hasDeletedWallet}
           className={cn(transaction ? "w-full rounded-none" : "w-fit")}
         >
           {transaction ? (

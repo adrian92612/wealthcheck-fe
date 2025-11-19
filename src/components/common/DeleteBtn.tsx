@@ -1,3 +1,4 @@
+import { useState } from "react";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -9,32 +10,41 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "../ui/alert-dialog";
+import type { ApiResponse } from "@/lib/apiClient";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useState } from "react";
-import { Button } from "../ui/button";
-import type { Transaction } from "@/lib/types";
-import { transactionApi } from "@/lib/api";
 import { toast } from "sonner";
+import { Button } from "../ui/button";
+import { useTrash } from "@/hooks/useIsTrash";
 
 type Props = {
-  transaction: Transaction;
+  id: string | number;
+  label: string;
+  name: string;
+  softDeleteFn: (id: number | string) => Promise<ApiResponse<unknown>>;
+  deleteFn: (id: number | string) => Promise<ApiResponse<unknown>>;
+  invalidateKeys: string[][];
 };
 
-const TransactionDeleteBtn = ({ transaction }: Props) => {
+const DeleteBtn = ({
+  id,
+  label,
+  name,
+  softDeleteFn,
+  deleteFn,
+  invalidateKeys,
+}: Props) => {
   const [open, setOpen] = useState<boolean>(false);
-  const queryClient = useQueryClient();
+  const { forSoftDeleted } = useTrash();
+  const qc = useQueryClient();
   const mutation = useMutation({
-    mutationFn: () => transactionApi.delete(transaction.id),
+    mutationFn: () => (forSoftDeleted ? deleteFn(id) : softDeleteFn(id)),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["transactions"] });
+      invalidateKeys.forEach((key) => qc.invalidateQueries({ queryKey: key }));
       setOpen(false);
     },
     onSettled: (res) => {
-      if (res?.success) {
-        toast.success(res.message);
-      } else {
-        toast.error(res?.message || "Something went wrong, try again later");
-      }
+      if (res?.success) toast.success(res.message);
+      else toast.error(res?.message || "Something went wrong, try again later");
     },
     throwOnError: true,
   });
@@ -50,8 +60,17 @@ const TransactionDeleteBtn = ({ transaction }: Props) => {
         <AlertDialogHeader>
           <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
           <AlertDialogDescription>
-            This action cannot be undone. This will permanently delete this
-            transaction. - {transaction.title}
+            <p className="mb-4">
+              This action cannot be undone.{" "}
+              {forSoftDeleted ? (
+                <span className="text-red-500">
+                  Permanently delete this {label}?
+                </span>
+              ) : (
+                <span>Delete this {label}?</span>
+              )}
+            </p>
+            - {name}
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
@@ -59,11 +78,11 @@ const TransactionDeleteBtn = ({ transaction }: Props) => {
             Cancel
           </AlertDialogCancel>
           <AlertDialogAction
+            className="bg-destructive hover:bg-destructive/80"
             onClick={() => mutation.mutate()}
             disabled={mutation.isPending}
-            className="bg-destructive"
           >
-            Continue
+            Delete
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
@@ -71,4 +90,4 @@ const TransactionDeleteBtn = ({ transaction }: Props) => {
   );
 };
 
-export default TransactionDeleteBtn;
+export default DeleteBtn;

@@ -31,6 +31,7 @@ type Props = {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   refreshUser: () => void;
+  closeDropDown?: () => void;
 };
 
 const WalletFormDialog = ({
@@ -38,10 +39,11 @@ const WalletFormDialog = ({
   open,
   onOpenChange,
   refreshUser,
+  closeDropDown,
 }: Props) => {
   const form = useForm<WalletFormData>({
     resolver: zodResolver(walletSchema),
-    mode: "all",
+    mode: "onBlur",
     defaultValues: {
       name: wallet?.name ?? "",
       balance: wallet?.balance ?? 0,
@@ -67,6 +69,7 @@ const WalletFormDialog = ({
       } else {
         toast.error(res?.message || "Something went wrong, try again later");
       }
+      if (closeDropDown) closeDropDown();
     },
     throwOnError: true,
   });
@@ -134,6 +137,7 @@ const WalletFormDialog = ({
                     <FormControl>
                       <Input
                         {...field}
+                        disabled={!!wallet}
                         type="number"
                         value={field.value === 0 ? "" : field.value}
                         onChange={(e) => {

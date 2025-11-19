@@ -3,11 +3,18 @@ import { useQuery } from "@tanstack/react-query";
 import { categoryApi } from "@/lib/api";
 import CategoryCard from "./CategoryCard";
 import CategoryListSkeleton from "../skeleton/CategoryListSkeleton";
+import { qCacheKey } from "@/constants/queryKeys";
+import { useTrash } from "@/hooks/useIsTrash";
 
 const CategoryList = () => {
+  const { forSoftDeleted } = useTrash();
   const { data: response, isPending } = useQuery({
-    queryKey: ["categories"],
-    queryFn: categoryApi.fetchAll,
+    queryKey: forSoftDeleted
+      ? qCacheKey.trashedCategories
+      : qCacheKey.categories,
+    queryFn: forSoftDeleted
+      ? categoryApi.fetchAllTrashed
+      : categoryApi.fetchAll,
     throwOnError: true,
   });
 

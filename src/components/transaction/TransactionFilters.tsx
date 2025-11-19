@@ -22,6 +22,7 @@ import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { categoryApi, walletApi } from "@/lib/api";
 import TransactionFiltersSkeleton from "../skeleton/TransactionFiltersSkeleton";
+import { qCacheKey } from "@/constants/queryKeys";
 
 type Props = {
   filter: TransactionFilterType;
@@ -37,12 +38,12 @@ const TransactionFilters = ({
   handleReset,
 }: Props) => {
   const { data: walletResp, isPending: wPending } = useQuery({
-    queryKey: ["wallets"],
+    queryKey: qCacheKey.wallets,
     queryFn: walletApi.fetchAll,
     throwOnError: true,
   });
   const { data: catResp, isPending: cPending } = useQuery({
-    queryKey: ["categories"],
+    queryKey: qCacheKey.categories,
     queryFn: categoryApi.fetchAll,
     throwOnError: true,
   });

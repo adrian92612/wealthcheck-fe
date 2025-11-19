@@ -15,4 +15,7 @@ export const apiEndpoints = {
   currentSummary: overviewUrl + "/current",
   topTransactions: overviewUrl + "/top-transactions",
   recentTransactions: overviewUrl + "/recent-transactions",
+  trash: {
+    transactions: apiBaseUrl + "/transaction/deleted",
+  },
 };
