@@ -26,21 +26,28 @@ const TransactionPageControl = ({
 }: Props) => {
   return (
     <div className="flex justify-between gap-5 flex-wrap">
-      <Select
-        value={String(filter.size)}
-        onValueChange={(value) => handlePageSizeChange(Number(value))}
-      >
-        <SelectTrigger className="w-48">
-          <SelectValue placeholder="Select a Type" />
-        </SelectTrigger>
-        <SelectContent>
-          {[5, 10, 20, 50].map((n) => (
-            <SelectItem key={n} value={String(n)}>
-              {n} per page
-            </SelectItem>
-          ))}
-        </SelectContent>
-      </Select>
+      <div className="flex flex-col gap-2">
+        <Select
+          value={String(filter.size)}
+          onValueChange={(value) => handlePageSizeChange(Number(value))}
+        >
+          <SelectTrigger className="w-48">
+            <SelectValue placeholder="Select a Type" />
+          </SelectTrigger>
+          <SelectContent>
+            {[5, 10, 20, 50].map((n) => (
+              <SelectItem key={n} value={String(n)}>
+                {n} per page
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+
+        <div className="inline-flex items-center gap-1 rounded-sm bg-secondary/15 border px-3 py-1 text-sm font-medium">
+          <span className="opacity-70">📦</span>
+          {txResp.totalItems} records
+        </div>
+      </div>
 
       <div className="flex items-center gap-2">
         <Button

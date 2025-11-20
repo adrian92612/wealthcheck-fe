@@ -18,16 +18,18 @@ const TransactionList = () => {
   const qKey = forSoftDeleted
     ? qCacheKey.trashedTransactions
     : qCacheKey.transactions;
+
+  const qFn = forSoftDeleted
+    ? transactionApi.fetchAllTrashed
+    : transactionApi.fetchAll;
+
   const {
     data: txResp,
     isPending: txPending,
     refetch,
   } = useQuery({
     queryKey: qKey,
-    queryFn: () =>
-      forSoftDeleted
-        ? transactionApi.fetchAllTrashed(filter)
-        : transactionApi.fetchAll(filter),
+    queryFn: () => qFn(filter),
     throwOnError: true,
   });
 
@@ -42,24 +44,24 @@ const TransactionList = () => {
 
   const handleReset = () => {
     setFilter(initialFilter);
-    transactionApi.fetchAll(initialFilter).then((data) => {
-      queryClient.setQueryData([qKey], data);
+    qFn(initialFilter).then((data) => {
+      queryClient.setQueryData(qKey, data);
     });
   };
 
   const handlePageChange = (newPage: number) => {
     const newFilter = { ...filter, page: newPage };
     setFilter(newFilter);
-    transactionApi.fetchAll(newFilter).then((data) => {
-      queryClient.setQueryData([qKey], data);
+    qFn(newFilter).then((data) => {
+      queryClient.setQueryData(qKey, data);
     });
   };
 
   const handlePageSizeChange = (size: number) => {
     const newFilter = { ...filter, size, page: 1 };
     setFilter(newFilter);
-    transactionApi.fetchAll(newFilter).then((data) => {
-      queryClient.setQueryData([qKey], data);
+    qFn(newFilter).then((data) => {
+      queryClient.setQueryData(qKey, data);
     });
   };
 
