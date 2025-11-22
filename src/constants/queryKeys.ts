@@ -8,4 +8,6 @@ export const qCacheKey = {
   topTransactions: ["topTransactions"],
   trashedWallets: ["trashedWallets"],
   trashedCategories: ["trashedCategories"],
+  dailySnapshot: ["dailySnapshot"],
+  topCategories: ["topCategories"],
 };

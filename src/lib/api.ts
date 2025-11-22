@@ -10,6 +10,8 @@ import type {
   CurrentSummary,
   OverviewTopTransaction,
   TransactionFilterResType,
+  DailyNetCumulative,
+  TopCategories,
 } from "./types";
 
 export const walletApi = makeCrudApi<Wallet, WalletFormData>(
@@ -33,4 +35,8 @@ export const overviewApi = {
     apiFetch<Transaction[]>(apiEndpoints.recentTransactions),
   getTopTransactions: () =>
     apiFetch<OverviewTopTransaction>(apiEndpoints.topTransactions),
+  getDailySnapshot: () =>
+    apiFetch<DailyNetCumulative>(apiEndpoints.overview.dailySnapshot),
+  getTopCategories: () =>
+    apiFetch<TopCategories>(apiEndpoints.overview.topCategories),
 };

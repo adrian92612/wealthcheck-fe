@@ -98,3 +98,19 @@ export type OverviewTopTransaction = {
   topIncome: Transaction[];
   topExpense: Transaction[];
 };
+
+export type DailyNetCumulative = {
+  date: string;
+  net: number;
+}[];
+
+export type TopCategories = {
+  topIncomeCategories: {
+    name: string;
+    amount: number;
+  }[];
+  topExpenseCategories: {
+    name: string;
+    amount: number;
+  }[];
+};

@@ -18,4 +18,8 @@ export const apiEndpoints = {
   trash: {
     transactions: apiBaseUrl + "/transaction/deleted",
   },
+  overview: {
+    dailySnapshot: overviewUrl + "/daily-net-cumulative-snapshot",
+    topCategories: overviewUrl + "/top-categories",
+  },
 };

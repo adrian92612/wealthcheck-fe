@@ -1,14 +1,14 @@
 import { overviewApi } from "@/lib/api";
 import { useQuery } from "@tanstack/react-query";
-import { Wallet, ArrowUpCircle, ArrowDownCircle, Activity } from "lucide-react";
-import StatCard from "./StatCard";
+// import { Wallet, ArrowUpCircle, ArrowDownCircle, Activity } from "lucide-react";
+// import StatCard from "./StatCard";
 import CurrentSummarySkeleton from "../skeleton/CurrentSummarySkeleton";
 import { qCacheKey } from "@/constants/queryKeys";
 
 const CurrentSummary = () => {
   const { data: response, isPending } = useQuery({
-    queryKey: qCacheKey.currentSummary,
-    queryFn: overviewApi.getCurrentSummary,
+    queryKey: qCacheKey.topCategories,
+    queryFn: overviewApi.getTopCategories,
     throwOnError: true,
   });
 
@@ -18,10 +18,11 @@ const CurrentSummary = () => {
   }
 
   const summary = response.data;
+  console.log(summary);
 
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 2xl:grid-cols-4 gap-5 place-items-stretch">
-      <StatCard
+      {/* <StatCard
         title="Total Balance"
         description="You current balance"
         icon={Wallet}
@@ -54,7 +55,7 @@ const CurrentSummary = () => {
         totalBalance={summary.expenseThisMonth}
         cardCN="bg-red-600/10"
         iconCN="text-red-600"
-      />
+      /> */}
     </div>
   );
 };

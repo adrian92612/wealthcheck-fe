@@ -1,6 +1,8 @@
 import PageHeader from "@/components/dashboard/PageHeader";
 import CurrentSummary from "@/components/Overview/CurrentSummary";
+import DailySnapshot from "@/components/Overview/DailySnapshot";
 import RecentTransactions from "@/components/Overview/RecentTransactions";
+import TopCategories from "@/components/Overview/TopCategories";
 import TopTransactions from "@/components/Overview/TopTransactions";
 
 const Overview = () => {
@@ -10,6 +12,8 @@ const Overview = () => {
         title="Overview"
         description="Get a snapshot of your finances, including current balances, recent transactions, and top spending categories."
       />
+      <DailySnapshot />
+      <TopCategories />
       <CurrentSummary />
       <div className="grid xl:grid-cols-5 gap-5">
         <RecentTransactions />
