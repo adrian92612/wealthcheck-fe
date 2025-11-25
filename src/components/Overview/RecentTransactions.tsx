@@ -28,7 +28,7 @@ const RecentTransactions = () => {
   const transactions: Transaction[] = res.data;
 
   return (
-    <Card className="min-h-96 max-h-fit">
+    <Card className="min-h-[450px] max-h-fit">
       <CardHeader>
         <CardTitle>Recent Transactions</CardTitle>
         <CardDescription>last 5 transactions</CardDescription>
