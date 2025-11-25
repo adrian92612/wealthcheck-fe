@@ -35,7 +35,7 @@ const MobileNavBar = ({ open, setOpen, handleLinkClick, menu }: Props) => {
           <LucideAlignJustify />
         </Button>
       </SheetTrigger>
-      <SheetContent side="left" className="py-10 justify-between">
+      <SheetContent side="left" className="pt-10 justify-between">
         <SheetHeader className="sr-only">
           <SheetTitle>Navigation Sheet</SheetTitle>
           <SheetDescription>Navigation sheet</SheetDescription>

@@ -86,7 +86,7 @@ const TransactionCard = ({ tx }: Props) => {
       : `${fromLabel} → ${toLabel}`;
 
   return (
-    <div className="flex items-center justify-between rounded-sm border p-3 shadow-sm">
+    <div className="flex items-center text-sm sm:text-base justify-between rounded-sm border border-secondary/10 bg-secondary/5 p-3 shadow-sm gap-5 overflow-x-auto">
       <div className="flex items-center gap-3">
         <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gray-100">
           {Icon ? (
@@ -96,14 +96,14 @@ const TransactionCard = ({ tx }: Props) => {
           )}
         </div>
 
-        <div>
+        <div className="text-xs sm:text-base">
           <p className="font-medium">{tx.title}</p>
           {tx.type === "TRANSFER" ? (
-            <p className="text-sm text-muted-foreground inline-flex gap-1">
+            <p className="text-muted-foreground inline-flex gap-1">
               {fromLabel} → {toLabel}
             </p>
           ) : (
-            <p className="text-sm text-muted-foreground inline-flex gap-1">
+            <p className="text-muted-foreground inline-flex gap-1">
               {categoryLabel} • {walletLabel}
             </p>
           )}
@@ -115,10 +115,10 @@ const TransactionCard = ({ tx }: Props) => {
           <p
             className={`font-bold ${
               tx.type === "INCOME"
-                ? "text-green-600"
+                ? "text-primary"
                 : tx.type === "EXPENSE"
-                ? "text-red-600"
-                : "text-blue-600"
+                ? "text-destructive"
+                : "text-blue-muted"
             }`}
           >
             {tx.type === "EXPENSE" ? "-" : ""}

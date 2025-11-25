@@ -1,6 +1,10 @@
 import PageHeader from "@/components/dashboard/PageHeader";
+import Budget from "@/components/Overview/Budget";
 import CurrentSummary from "@/components/Overview/CurrentSummary";
+import DailyNet from "@/components/Overview/DailyNet";
+import MoneyGoal from "@/components/Overview/MoneyGoal";
 import RecentTransactions from "@/components/Overview/RecentTransactions";
+import TopCategories from "@/components/Overview/TopCategories";
 import TopTransactions from "@/components/Overview/TopTransactions";
 
 const Overview = () => {
@@ -10,10 +14,21 @@ const Overview = () => {
         title="Overview"
         description="Get a snapshot of your finances, including current balances, recent transactions, and top spending categories."
       />
-      <CurrentSummary />
-      <div className="grid xl:grid-cols-5 gap-5">
-        <RecentTransactions />
-        <TopTransactions />
+
+      <div className="grid gap-5 lg:grid-cols-3 ">
+        <div className="flex flex-col gap-5 lg:col-span-2 ">
+          <CurrentSummary />
+          <div className="grid gap-5 lg:grid-cols-2">
+            <MoneyGoal />
+            <Budget />
+          </div>
+          <DailyNet />
+          <TopCategories />
+        </div>
+        <div className="grid gap-5">
+          <RecentTransactions />
+          <TopTransactions />
+        </div>
       </div>
     </div>
   );

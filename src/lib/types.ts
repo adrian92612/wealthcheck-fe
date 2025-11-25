@@ -89,12 +89,27 @@ export type WalletFormData = z.infer<typeof walletSchema>;
 
 export type CurrentSummary = {
   totalBalance: number;
-  incomeThisMonth: number;
-  expenseThisMonth: number;
-  netCashFlow: number;
+  percentageDifference: number;
+  dailyAverageSpending: number;
 };
 
 export type OverviewTopTransaction = {
   topIncome: Transaction[];
   topExpense: Transaction[];
+};
+
+export type DailyNetCumulative = {
+  date: string;
+  net: number;
+}[];
+
+export type TopCategories = {
+  topIncomeCategories: {
+    name: string;
+    amount: number;
+  }[];
+  topExpenseCategories: {
+    name: string;
+    amount: number;
+  }[];
 };

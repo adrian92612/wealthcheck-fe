@@ -1,9 +1,10 @@
 import { overviewApi } from "@/lib/api";
 import { useQuery } from "@tanstack/react-query";
-import { Wallet, ArrowUpCircle, ArrowDownCircle, Activity } from "lucide-react";
-import StatCard from "./StatCard";
 import CurrentSummarySkeleton from "../skeleton/CurrentSummarySkeleton";
 import { qCacheKey } from "@/constants/queryKeys";
+import StatCard from "./StatCard";
+import { Activity, TrendingDown, TrendingUp, Wallet } from "lucide-react";
+import { cn, formatNumber } from "@/lib/utils";
 
 const CurrentSummary = () => {
   const { data: response, isPending } = useQuery({
@@ -18,42 +19,39 @@ const CurrentSummary = () => {
   }
 
   const summary = response.data;
+  const isPositive = summary.percentageDifference >= 0;
+  const prefix = isPositive ? "+" : "-";
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 2xl:grid-cols-4 gap-5 place-items-stretch">
+    <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
       <StatCard
         title="Total Balance"
-        description="You current balance"
+        description="Your current wallet balance"
         icon={Wallet}
-        totalBalance={summary.totalBalance}
-        cardCN="bg-amber-600/10"
+        value={formatNumber(summary.totalBalance)}
+        cardCN="md:col-span-2 xl:col-span-1"
         iconCN="text-amber-600"
       />
+
       <StatCard
-        title="Net Cash Flow"
-        description="Income - Expense"
+        title="Change From Last Month"
+        description="Percentage difference vs last month"
+        icon={isPositive ? TrendingUp : TrendingDown}
+        value={`${prefix}${summary.percentageDifference}%`}
+        contentCN={cn(
+          isPositive ? "text-primary" : "text-destructive",
+          "xl:col-span-1"
+        )}
+        iconCN={isPositive ? "text-emerald-600" : "text-red-600"}
+      />
+
+      <StatCard
+        title="Daily Average Spending"
+        description="Your average expense per day this month"
         icon={Activity}
-        totalBalance={summary.netCashFlow}
-        cardCN="bg-emerald-600/10"
-        iconCN="text-emerald-600"
-      />
-
-      <StatCard
-        title="Total Income"
-        description="This month"
-        icon={ArrowUpCircle}
-        totalBalance={summary.incomeThisMonth}
-        cardCN="bg-green-600/10"
-        iconCN="text-green-600"
-      />
-
-      <StatCard
-        title="Total Expense"
-        description="This month"
-        icon={ArrowDownCircle}
-        totalBalance={summary.expenseThisMonth}
-        cardCN="bg-red-600/10"
-        iconCN="text-red-600"
+        value={formatNumber(summary.dailyAverageSpending)}
+        cardCN="xl:col-span-1"
+        iconCN="text-destructive"
       />
     </div>
   );

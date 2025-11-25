@@ -46,7 +46,7 @@ const Home = () => {
   if (user) return <Navigate to={appRoute.overview} replace />;
 
   return (
-    <div className="min-h-dvh flex flex-col bg-gradient-to-br from-gray-50 via-white to-gray-100 relative overflow-hidden">
+    <div className="min-h-dvh flex flex-col bg-linear-to-br from-gray-50 via-white to-gray-100 relative overflow-hidden">
       <div className="absolute -top-24 -left-24 w-96 h-96 bg-primary/80 rounded-full blur-3xl" />
       <div className="absolute bottom-0 -right-32 w-96 h-96 bg-secondary/70 rounded-full blur-3xl" />
       <div className="absolute top-40 right-56 w-96 h-96 bg-primary/70 rounded-full blur-3xl" />

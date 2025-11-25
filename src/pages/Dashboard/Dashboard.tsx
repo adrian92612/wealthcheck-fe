@@ -24,8 +24,10 @@ const Dashboard = () => {
       {!isMobile && <Sidebar />}
 
       <main className="flex-1 h-dvh overflow-y-auto px-2 md:px-10 py-5">
-        {isMobile && <Sidebar />}
-        <Outlet />
+        <div className="mx-auto max-w-[1920px]">
+          {isMobile && <Sidebar />}
+          <Outlet />
+        </div>
       </main>
     </div>
   );

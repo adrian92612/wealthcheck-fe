@@ -3,14 +3,12 @@ import { Button } from "../ui/button";
 import { LogOut } from "lucide-react";
 import { getFirstName, getInitials } from "@/lib/utils";
 import { apiEndpoints } from "@/constants/apiEndpoints";
-import { Separator } from "../ui/separator";
 import { useAuth } from "@/hooks/useAuth";
 
 const AvatarSection = () => {
   const { user } = useAuth();
   return (
-    <div className="space-y-4">
-      <Separator className="bg-forestGreen" />
+    <div className="space-y-4 bg-primary/10 pt-5">
       <div className="flex items-center gap-4 pl-3.5">
         <Avatar>
           <AvatarImage src={user?.avatarUrl} />
@@ -21,9 +19,9 @@ const AvatarSection = () => {
 
       <Button
         asChild
-        variant="destructive"
+        variant="ghost"
         size="sm"
-        className="justify-start w-full rounded-none gap-5.5"
+        className="justify-start w-full rounded-none gap-5.5 border-t border-secondary/50 pt-2"
       >
         <a href={apiEndpoints.auth.logout}>
           <LogOut className="size-5 ml-2" />

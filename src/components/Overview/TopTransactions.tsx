@@ -26,14 +26,14 @@ const TopTransactions = () => {
 
   const data: OverviewTopTransaction = res.data;
   return (
-    <Card className="min-h-96 xl:col-span-3">
+    <Card className="min-h-96">
       <CardHeader>
         <CardTitle>Top Transactions</CardTitle>
         <CardDescription>Most significant incomes and expenses</CardDescription>
       </CardHeader>
 
       <CardContent>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="space-y-5">
           <div>
             <h3 className="font-semibold mb-2 text-green-600">Income</h3>
             <div className="space-y-2">
