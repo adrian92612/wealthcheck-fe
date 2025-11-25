@@ -25,7 +25,7 @@ const Overview = () => {
           <DailyNet />
           <TopCategories />
         </div>
-        <div className="grid gap-5">
+        <div className="space-y-5">
           <RecentTransactions />
           <TopTransactions />
         </div>

@@ -26,7 +26,7 @@ const TopTransactions = () => {
 
   const data: OverviewTopTransaction = res.data;
   return (
-    <Card className="min-h-96">
+    <Card className="min-h-[450px] max-h-fit">
       <CardHeader>
         <CardTitle>Top Transactions</CardTitle>
         <CardDescription>Most significant incomes and expenses</CardDescription>

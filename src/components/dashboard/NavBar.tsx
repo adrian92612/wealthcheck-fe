@@ -20,7 +20,7 @@ const NavBar = ({ open, toggleSidebar, handleLinkClick, menu }: Props) => {
       aria-label="Sidebar"
       className={cn(
         open ? "w-56" : "w-16",
-        "flex flex-col justify-between bg-card pt-2 overflow-hidden transition-all ease-in duration-100 border-r border-r-primary/10"
+        "flex flex-col justify-between bg-card pt-2 overflow-hidden transition-all ease-in-out duration-200 border-r border-r-primary/10"
       )}
     >
       <div>
@@ -39,7 +39,7 @@ const NavBar = ({ open, toggleSidebar, handleLinkClick, menu }: Props) => {
           >
             <LucideChevronRight
               className={cn(
-                "size-6 transition-all duration-300",
+                "size-6 transition-all duration-200 ease-in-out",
                 open && "rotate-180"
               )}
             />
