@@ -20,7 +20,7 @@ const CurrentSummary = () => {
 
   const summary = response.data;
   const isPositive = summary.percentageDifference >= 0;
-  const prefix = isPositive ? "+" : "-";
+  const prefix = isPositive ? "+" : "";
 
   return (
     <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
@@ -34,8 +34,8 @@ const CurrentSummary = () => {
       />
 
       <StatCard
-        title="Change From Last Month"
-        description="Percentage difference vs last month"
+        title="Monthly Change"
+        description="Compared to last month"
         icon={isPositive ? TrendingUp : TrendingDown}
         value={`${prefix}${summary.percentageDifference}%`}
         contentCN={cn(
@@ -46,8 +46,8 @@ const CurrentSummary = () => {
       />
 
       <StatCard
-        title="Daily Average Spending"
-        description="Your average expense per day this month"
+        title="Avg Daily Spend"
+        description="Average spent per day this month"
         icon={Activity}
         value={formatNumber(summary.dailyAverageSpending)}
         cardCN="xl:col-span-1"
