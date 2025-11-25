@@ -5,30 +5,32 @@ import {
   CardHeader,
   CardTitle,
 } from "../ui/card";
-import { cn, formatNumber } from "@/lib/utils";
+import { cn } from "@/lib/utils";
 
 type Props = {
   title: string;
   description: string;
   icon: React.ElementType;
-  totalBalance: number;
+  value: number | string;
   cardCN?: string;
   iconCN?: string;
   contentCN?: string;
+  prefix?: string;
+  suffix?: string;
 };
 
 const StatCard = ({
   title,
   description,
   icon,
-  totalBalance,
+  value,
   cardCN,
   iconCN,
   contentCN,
 }: Props) => {
   const Icon = icon;
   return (
-    <Card className={cn("w-full max-w-xl mx-auto justify-between", cardCN)}>
+    <Card className={cn("w-full mx-auto justify-between", cardCN)}>
       <CardHeader>
         <div className="flex items-center justify-between gap-5">
           <div>
@@ -44,7 +46,7 @@ const StatCard = ({
           contentCN
         )}
       >
-        {formatNumber(totalBalance)}
+        {value}
       </CardContent>
     </Card>
   );

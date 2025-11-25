@@ -28,13 +28,13 @@ const RecentTransactions = () => {
   const transactions: Transaction[] = res.data;
 
   return (
-    <Card className="min-h-96 xl:col-span-2">
+    <Card className="min-h-96 max-h-fit">
       <CardHeader>
         <CardTitle>Recent Transactions</CardTitle>
         <CardDescription>last 5 transactions</CardDescription>
       </CardHeader>
       <CardContent>
-        <div className="space-y-3">
+        <div className="space-y-2">
           {transactions.map((tx) => (
             <TransactionCard key={tx.id} tx={tx} />
           ))}

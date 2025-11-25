@@ -20,7 +20,7 @@ const NavBar = ({ open, toggleSidebar, handleLinkClick, menu }: Props) => {
       aria-label="Sidebar"
       className={cn(
         open ? "w-56" : "w-16",
-        "flex flex-col justify-between py-2 overflow-hidden transition-all ease-linear duration-300 border-r border-r-forestGreen"
+        "flex flex-col justify-between bg-card pt-2 overflow-hidden transition-all ease-in duration-100 border-r border-r-primary/10"
       )}
     >
       <div>
@@ -35,7 +35,7 @@ const NavBar = ({ open, toggleSidebar, handleLinkClick, menu }: Props) => {
             size="icon"
             aria-expanded={open}
             aria-controls="sidebar-nav"
-            className="ml-auto border-2 border-forestGreen text-forestGreen hover:text-secondary hover:border-secondary"
+            className="ml-auto text-primary bg-primary/5 border-primary/20 hover:bg-secondary/10 hover:text-secondary hover:border-secondary/10"
           >
             <LucideChevronRight
               className={cn(

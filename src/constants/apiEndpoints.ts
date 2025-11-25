@@ -12,9 +12,13 @@ export const apiEndpoints = {
   wallet: apiBaseUrl + "/wallet",
   category: apiBaseUrl + "/category",
   transaction: apiBaseUrl + "/transaction",
-  currentSummary: overviewUrl + "/current",
-  topTransactions: overviewUrl + "/top-transactions",
-  recentTransactions: overviewUrl + "/recent-transactions",
+  overview: {
+    currentSummary: overviewUrl + "/current",
+    topTransactions: overviewUrl + "/top-transactions",
+    recentTransactions: overviewUrl + "/recent-transactions",
+    dailyNetSnapshot: overviewUrl + "/daily-net-snapshot",
+    topCategories: overviewUrl + "/top-categories",
+  },
   trash: {
     transactions: apiBaseUrl + "/transaction/deleted",
   },

@@ -25,6 +25,7 @@ import { walletApi } from "@/lib/api";
 import { Plus } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
+import { qCacheKey } from "@/constants/queryKeys";
 
 type Props = {
   wallet?: Wallet;
@@ -58,7 +59,7 @@ const WalletFormDialog = ({
       return walletApi.create(data);
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["wallets"] });
+      queryClient.invalidateQueries({ queryKey: qCacheKey.wallets });
       form.reset();
       refreshUser();
       onOpenChange(false);
