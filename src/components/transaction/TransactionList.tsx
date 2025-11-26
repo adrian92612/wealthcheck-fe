@@ -6,9 +6,20 @@ import TransactionFilters from "./TransactionFilters";
 import TransactionPageControl from "./TransactionPageControl";
 import TransactionCardsBlock from "./TransactionCardsBlock";
 import TransactionListSkeleton from "../skeleton/TransactionListSkeleton";
-import { initialFilter } from "./constants";
 import { useTrash } from "@/hooks/useIsTrash";
 import { qCacheKey } from "@/constants/queryKeys";
+import { format, subDays } from "date-fns";
+
+const initialFilter: TransactionFilterType = {
+  page: 1,
+  size: 10,
+  categoryId: null,
+  walletId: null,
+  fromDate: format(subDays(new Date(), 7), "yyyy-MM-dd"),
+  toDate: format(new Date(), "yyyy-MM-dd"),
+  type: null,
+  search: null,
+};
 
 const TransactionList = () => {
   const [filter, setFilter] = useState<TransactionFilterType>(initialFilter);

@@ -39,6 +39,7 @@ import type {
 import { Plus } from "lucide-react";
 import { toast } from "sonner";
 import { qCacheKey } from "@/constants/queryKeys";
+import { format } from "date-fns";
 
 type Props = {
   transaction?: Transaction;
@@ -64,6 +65,9 @@ const TransactionFormDialog = ({
       title: transaction?.title ?? "",
       notes: transaction?.notes ?? "",
       amount: transaction?.amount ?? 0,
+      transactionDate: transaction?.transactionDate
+        ? new Date(transaction.transactionDate)
+        : new Date(),
     },
   });
 
@@ -365,6 +369,28 @@ const TransactionFormDialog = ({
                         }}
                         min={0}
                         placeholder="0.00"
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="transactionDate"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Transaction Date</FormLabel>
+                    <FormControl>
+                      <Input
+                        type="datetime-local"
+                        value={format(field.value, "yyyy-MM-dd'T'HH:mm")}
+                        onChange={(e) => {
+                          const val = e.target.value;
+                          field.onChange(val ? new Date(val) : new Date());
+                        }}
+                        className="w-fit"
                       />
                     </FormControl>
                     <FormMessage />

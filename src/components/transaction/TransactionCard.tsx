@@ -125,7 +125,7 @@ const TransactionCard = ({ tx }: Props) => {
             {formatNumber(tx.amount)}
           </p>
           <p className="text-xs text-muted-foreground">
-            {format(new Date(tx.createdAt), "MMM d, yyyy")}
+            {format(new Date(tx.transactionDate), "MMM d, yyyy hh:mm a")}
           </p>
         </div>
 

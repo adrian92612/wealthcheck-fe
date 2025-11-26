@@ -51,7 +51,9 @@ const RestoreBtn = ({ id, label, name, restoreFn, invalidateKeys }: Props) => {
         <AlertDialogHeader>
           <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
           <AlertDialogDescription>
-            <p className="mb-4">Restore this {label.toLowerCase()}?</p>- {name}
+            Restore this {label.toLowerCase()}?
+            <br />
+            <br />- {name}
           </AlertDialogDescription>
         </AlertDialogHeader>
 
