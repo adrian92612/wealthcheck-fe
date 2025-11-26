@@ -50,6 +50,7 @@ export type Transaction = BaseEntity & {
   title: string;
   notes?: string;
   amount: number;
+  transactionDate: Date;
 };
 
 export type Wallet = BaseEntity & {

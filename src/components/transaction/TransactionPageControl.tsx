@@ -6,7 +6,7 @@ import {
   SelectValue,
 } from "../ui/select";
 import { Button } from "../ui/button";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight, FileText } from "lucide-react";
 import type {
   TransactionFilterResType,
   TransactionFilterType,
@@ -43,9 +43,9 @@ const TransactionPageControl = ({
           </SelectContent>
         </Select>
 
-        <div className="inline-flex items-center gap-1 rounded-sm bg-secondary/15 border px-3 py-1 text-sm font-medium">
-          <span className="opacity-70">📦</span>
-          {txResp.totalItems} records
+        <div className="inline-flex items-center gap-1 rounded-sm bg-secondary/30 border border-secondary/50 px-3 py-1 text-sm font-medium">
+          <FileText className="w-4 h-4 opacity-70 text-primary" />
+          {txResp.totalItems} record(s)
         </div>
       </div>
 

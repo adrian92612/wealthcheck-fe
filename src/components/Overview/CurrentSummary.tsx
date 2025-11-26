@@ -34,8 +34,8 @@ const CurrentSummary = () => {
       />
 
       <StatCard
-        title="Monthly Change"
-        description="Compared to last month"
+        title="Percent Change"
+        description="From previous month"
         icon={isPositive ? TrendingUp : TrendingDown}
         value={`${prefix}${summary.percentageDifference}%`}
         contentCN={cn(

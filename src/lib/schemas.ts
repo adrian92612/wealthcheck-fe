@@ -20,6 +20,7 @@ const baseSchema = z.object({
   amount: z
     .number({ error: "Amount is required" })
     .gt(0, { error: "Must be greater than 0" }),
+  transactionDate: z.date({ error: "Transaction date is required" }),
 });
 
 export const transactionSchema = z

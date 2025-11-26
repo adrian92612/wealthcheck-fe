@@ -60,17 +60,17 @@ const DeleteBtn = ({
         <AlertDialogHeader>
           <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
           <AlertDialogDescription>
-            <p className="mb-4">
-              This action cannot be undone.{" "}
-              {forSoftDeleted ? (
-                <span className="text-red-500">
-                  Permanently delete this {label}?
-                </span>
-              ) : (
-                <span>Delete this {label}?</span>
-              )}
-            </p>
-            - {name}
+            This action cannot be undone.{" "}
+            {forSoftDeleted ? (
+              <span className="text-red-500">
+                Permanently delete this {label}?
+              </span>
+            ) : (
+              <span>Delete this {label}?</span>
+            )}
+            <br />
+            <br />
+            <span>- {name}</span>
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
