@@ -50,7 +50,7 @@ const CategoryFormDialog = ({ category, closeDropDown }: Props) => {
   const [open, setOpen] = useState<boolean>(false);
   const form = useForm<CategoryFormData>({
     resolver: zodResolver(categorySchema),
-    mode: "all",
+    mode: "onBlur",
     defaultValues: {
       name: category?.name ?? "",
       description: category?.description ?? "",

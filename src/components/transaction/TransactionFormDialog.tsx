@@ -48,6 +48,15 @@ type Props = {
   closeDropDown?: () => void;
 };
 
+const keysToInvalidate = [
+  qCacheKey.transactions,
+  qCacheKey.trashedTransactions,
+  qCacheKey.moneyGoal,
+  qCacheKey.recentTransactions,
+  qCacheKey.topTransactions,
+  qCacheKey.dailySnapshot,
+];
+
 const TransactionFormDialog = ({
   transaction,
   forType,
@@ -84,6 +93,7 @@ const TransactionFormDialog = ({
   });
 
   const queryClient = useQueryClient();
+
   const { mutate, isPending } = useMutation({
     mutationFn: (data: TransactionFormData) => {
       if (transaction?.id) {
@@ -92,7 +102,9 @@ const TransactionFormDialog = ({
       return transactionApi.create(data);
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: qCacheKey.transactions });
+      keysToInvalidate.forEach((key) =>
+        queryClient.invalidateQueries({ queryKey: key })
+      );
       setOpen(false);
       if (!transaction) form.reset();
     },

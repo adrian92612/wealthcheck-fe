@@ -56,6 +56,9 @@ const TransactionCard = ({ tx }: Props) => {
   const keysToInvalidate = [
     qCacheKey.transactions,
     qCacheKey.trashedTransactions,
+    qCacheKey.moneyGoal,
+    qCacheKey.recentTransactions,
+    qCacheKey.topTransactions,
   ];
 
   const Icon = tx.categoryIcon
