@@ -21,7 +21,7 @@ type Props = {
   name: string;
   restoreFn: (id: string | number) => Promise<ApiResponse<unknown>>;
   invalidateKeys: string[][];
-  hasDeletedWallet: boolean;
+  hasDeletedWallet?: boolean;
 };
 
 const RestoreBtn = ({
