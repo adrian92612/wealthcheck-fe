@@ -5,7 +5,7 @@ import {
   CardTitle,
   CardDescription,
 } from "@/components/ui/card";
-import { formatNumber } from "@/lib/utils";
+import { cn, formatNumber } from "@/lib/utils";
 import { useQuery } from "@tanstack/react-query";
 import { qCacheKey } from "@/constants/queryKeys";
 import { overviewApi } from "@/lib/api";
@@ -14,7 +14,7 @@ import MoneyGoalFormDialog from "./MoneyGoalFormDialog";
 const getProgressColor = (percent: number) =>
   percent < 50
     ? "bg-destructive"
-    : percent < 90
+    : percent < 80
     ? "bg-blue-muted"
     : "bg-primary";
 
@@ -33,7 +33,8 @@ const MoneyGoal = () => {
   const data = response.data ?? {};
   const { name = "Goal", amount = 0, currentBalance = 0 } = data;
 
-  const percentComplete = Math.min((currentBalance / (amount || 1)) * 100, 100);
+  const percentComplete =
+    amount > 0 ? Math.min((currentBalance / amount) * 100, 100) : 0;
 
   return (
     <Card className="justify-between min-h-44">
@@ -53,9 +54,10 @@ const MoneyGoal = () => {
         </div>
         <div className="w-full h-4 bg-gray-200 rounded-full overflow-hidden">
           <div
-            className={`h-4 rounded-full transition-all duration-300 ${getProgressColor(
-              percentComplete
-            )}`}
+            className={cn(
+              "h-4 rounded-full transition-all duration-300",
+              getProgressColor(percentComplete)
+            )}
             style={{ width: `${percentComplete}%` }}
           />
         </div>

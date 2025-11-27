@@ -1,5 +1,9 @@
-import { moneyGoalSchema } from "@/lib/schemas";
-import type { MoneyGoal, MoneyGoalFormData } from "@/lib/types";
+import { moneyBudgetSchema } from "@/lib/schemas";
+import type {
+  MoneyBudget,
+  MoneyBudgetFormData,
+  MoneyGoalFormData,
+} from "@/lib/types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
@@ -27,33 +31,34 @@ import { qCacheKey } from "@/constants/queryKeys";
 import { toast } from "sonner";
 
 type Props = {
-  moneyGoal?: MoneyGoal;
+  moneyBudget?: MoneyBudget;
 };
 
-const MoneyGoalFormDialog = ({ moneyGoal }: Props) => {
+const BudgetFormDialog = ({ moneyBudget }: Props) => {
   const [open, setOpen] = useState<boolean>(false);
-  const form = useForm<MoneyGoalFormData>({
-    resolver: zodResolver(moneyGoalSchema),
+  const form = useForm<MoneyBudgetFormData>({
+    resolver: zodResolver(moneyBudgetSchema),
     mode: "onBlur",
     defaultValues: {
-      name: moneyGoal?.name ?? "",
-      amount: moneyGoal?.amount ?? 0,
+      name: moneyBudget?.name ?? "",
+      amount: moneyBudget?.amount ?? 0,
     },
   });
 
   useEffect(() => {
     form.reset({
-      name: moneyGoal?.name ?? "",
-      amount: moneyGoal?.amount ?? 0,
+      name: moneyBudget?.name ?? "",
+      amount: moneyBudget?.amount ?? 0,
     });
-  }, [form, moneyGoal?.amount, moneyGoal?.name]);
+  }, [form, moneyBudget?.amount, moneyBudget?.name]);
 
   const queryClient = useQueryClient();
   const { mutate, isPending } = useMutation({
-    mutationFn: (data: MoneyGoalFormData) => overviewApi.updateMoneyGoal(data),
+    mutationFn: (data: MoneyBudgetFormData) =>
+      overviewApi.updateMoneyBudget(data),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: qCacheKey.moneyGoal });
-      if (!moneyGoal) form.reset();
+      queryClient.invalidateQueries({ queryKey: qCacheKey.moneyBudget });
+      if (!moneyBudget) form.reset();
       setOpen(false);
     },
     onSettled: (res) => {
@@ -71,10 +76,10 @@ const MoneyGoalFormDialog = ({ moneyGoal }: Props) => {
   };
 
   const btnText = isPending
-    ? moneyGoal
+    ? moneyBudget
       ? "Updating..."
       : "Submitting..."
-    : moneyGoal
+    : moneyBudget
     ? "Update"
     : "Submit";
 
@@ -82,13 +87,13 @@ const MoneyGoalFormDialog = ({ moneyGoal }: Props) => {
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button variant="secondary" size="sm">
-          {moneyGoal ? "Update" : "Add"}
+          {moneyBudget ? "Update" : "Add"}
         </Button>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Add Your Goal</DialogTitle>
-          <DialogDescription className="sr-only">Add Goal</DialogDescription>
+          <DialogTitle>Declare a Budget</DialogTitle>
+          <DialogDescription className="sr-only">Add Budget</DialogDescription>
         </DialogHeader>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)}>
@@ -114,7 +119,7 @@ const MoneyGoalFormDialog = ({ moneyGoal }: Props) => {
                 name="amount"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Goal Amount</FormLabel>
+                    <FormLabel>Budget Amount</FormLabel>
                     <FormControl>
                       <Input
                         {...field}
@@ -143,4 +148,4 @@ const MoneyGoalFormDialog = ({ moneyGoal }: Props) => {
   );
 };
 
-export default MoneyGoalFormDialog;
+export default BudgetFormDialog;
