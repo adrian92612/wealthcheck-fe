@@ -3,7 +3,7 @@ import { transactionTypes, categoryTypes } from "./types";
 
 export const walletSchema = z.object({
   name: z.string().trim().min(1, { error: "Must be at least 1 character" }),
-  balance: z.number().gt(0, "Balance must be greater than 0"),
+  balance: z.number().gte(0, "Balance cannot be negative"),
 });
 
 export const categorySchema = z.object({

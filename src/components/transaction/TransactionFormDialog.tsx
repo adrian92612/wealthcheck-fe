@@ -128,14 +128,6 @@ const TransactionFormDialog = ({
   const fromWalletId = form.watch("fromWalletId");
   const toWalletId = form.watch("toWalletId");
 
-  if (walletsLoading || categoriesLoading) {
-    return (
-      <Button disabled className="w-fit">
-        <Plus /> Add Transaction
-      </Button>
-    );
-  }
-
   const walletList = wallets?.data ?? [];
   const categoryList = categories?.data ?? [];
   const btnText = transaction
@@ -183,7 +175,7 @@ const TransactionFormDialog = ({
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)}>
             <fieldset
-              disabled={isPending}
+              disabled={isPending || walletsLoading || categoriesLoading}
               className="flex flex-col gap-4 disabled:opacity-70"
             >
               <FormField
