@@ -94,6 +94,7 @@ export type CurrentSummary = {
   totalBalance: number;
   percentageDifference: number;
   dailyAverageSpending: number;
+  lastMonthBalance: number;
 };
 
 export type OverviewTopTransaction = {

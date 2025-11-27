@@ -3,7 +3,13 @@ import { useQuery } from "@tanstack/react-query";
 import CurrentSummarySkeleton from "../skeleton/CurrentSummarySkeleton";
 import { qCacheKey } from "@/constants/queryKeys";
 import StatCard from "./StatCard";
-import { Activity, TrendingDown, TrendingUp, Wallet } from "lucide-react";
+import {
+  Activity,
+  Minus,
+  TrendingDown,
+  TrendingUp,
+  Wallet,
+} from "lucide-react";
 import { cn, formatNumber } from "@/lib/utils";
 
 const CurrentSummary = () => {
@@ -19,8 +25,20 @@ const CurrentSummary = () => {
   }
 
   const summary = response.data;
-  const isPositive = summary.percentageDifference >= 0;
-  const prefix = isPositive ? "+" : "";
+
+  const diff = summary.percentageDifference;
+  const noDiff = diff === 0;
+  const isPositive = diff > 0;
+
+  const percentLabel = noDiff ? "0%" : `${diff > 0 ? "+" : ""}${diff}%`;
+
+  const icon = noDiff ? Minus : isPositive ? TrendingUp : TrendingDown;
+
+  const colorClass = noDiff
+    ? "text-blue-muted"
+    : isPositive
+    ? "text-primary"
+    : "text-destructive";
 
   return (
     <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
@@ -28,31 +46,34 @@ const CurrentSummary = () => {
         title="Total Balance"
         description="Your current wallet balance"
         icon={Wallet}
-        value={formatNumber(summary.totalBalance)}
         cardCN="md:col-span-2 xl:col-span-1"
         iconCN="text-amber-600"
-      />
+      >
+        <p className="text-xs text-text-muted mb-1">
+          Last Month: {formatNumber(summary.lastMonthBalance)}
+        </p>
+        <p>{formatNumber(summary.totalBalance)}</p>
+      </StatCard>
 
       <StatCard
         title="Percent Change"
         description="From previous month"
-        icon={isPositive ? TrendingUp : TrendingDown}
-        value={`${prefix}${summary.percentageDifference}%`}
-        contentCN={cn(
-          isPositive ? "text-primary" : "text-destructive",
-          "xl:col-span-1"
-        )}
-        iconCN={isPositive ? "text-emerald-600" : "text-red-600"}
-      />
+        icon={icon}
+        contentCN={cn(colorClass, "xl:col-span-1")}
+        iconCN={colorClass}
+      >
+        {percentLabel}
+      </StatCard>
 
       <StatCard
         title="Avg Daily Spend"
         description="Average spent per day this month"
         icon={Activity}
-        value={formatNumber(summary.dailyAverageSpending)}
         cardCN="xl:col-span-1"
         iconCN="text-destructive"
-      />
+      >
+        {formatNumber(summary.dailyAverageSpending)}
+      </StatCard>
     </div>
   );
 };
