@@ -10,4 +10,6 @@ export const qCacheKey = {
   trashedCategories: ["trashedCategories"],
   dailySnapshot: ["dailySnapshot"],
   topCategories: ["topCategories"],
+  moneyGoal: ["moneyGoal"],
+  moneyBudget: ["moneyBudget"],
 };

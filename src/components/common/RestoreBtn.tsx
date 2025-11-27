@@ -21,9 +21,17 @@ type Props = {
   name: string;
   restoreFn: (id: string | number) => Promise<ApiResponse<unknown>>;
   invalidateKeys: string[][];
+  hasDeletedWallet?: boolean;
 };
 
-const RestoreBtn = ({ id, label, name, restoreFn, invalidateKeys }: Props) => {
+const RestoreBtn = ({
+  id,
+  label,
+  name,
+  restoreFn,
+  invalidateKeys,
+  hasDeletedWallet = false,
+}: Props) => {
   const [open, setOpen] = useState(false);
   const qc = useQueryClient();
 
@@ -42,7 +50,11 @@ const RestoreBtn = ({ id, label, name, restoreFn, invalidateKeys }: Props) => {
   return (
     <AlertDialog open={open} onOpenChange={setOpen}>
       <AlertDialogTrigger asChild>
-        <Button variant="ghost" className="w-full rounded-none">
+        <Button
+          variant="ghost"
+          disabled={hasDeletedWallet}
+          className="w-full rounded-none"
+        >
           Restore
         </Button>
       </AlertDialogTrigger>

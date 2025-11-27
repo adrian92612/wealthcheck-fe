@@ -59,3 +59,8 @@ export const transactionSchema = z
       path: ["toWalletId"],
     }
   );
+
+export const moneyGoalSchema = z.object({
+  name: z.string().trim().min(1, { error: "Must be at least 1 character" }),
+  amount: z.number().gt(0, "Goal amount must be greater than 0"),
+});

@@ -1,6 +1,7 @@
 import z from "zod";
 import type {
   categorySchema,
+  moneyGoalSchema,
   transactionSchema,
   walletSchema,
 } from "./schemas";
@@ -87,11 +88,13 @@ export const transactionTypes = ["INCOME", "EXPENSE", "TRANSFER"] as const;
 export type TransactionType = (typeof transactionTypes)[number];
 
 export type WalletFormData = z.infer<typeof walletSchema>;
+export type MoneyGoalFormData = z.infer<typeof moneyGoalSchema>;
 
 export type CurrentSummary = {
   totalBalance: number;
   percentageDifference: number;
   dailyAverageSpending: number;
+  lastMonthBalance: number;
 };
 
 export type OverviewTopTransaction = {
@@ -113,4 +116,10 @@ export type TopCategories = {
     name: string;
     amount: number;
   }[];
+};
+
+export type MoneyGoal = {
+  name: string;
+  amount: number;
+  currentBalance: number;
 };

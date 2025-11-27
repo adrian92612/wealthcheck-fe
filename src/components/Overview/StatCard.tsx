@@ -11,22 +11,20 @@ type Props = {
   title: string;
   description: string;
   icon: React.ElementType;
-  value: number | string;
   cardCN?: string;
   iconCN?: string;
   contentCN?: string;
-  prefix?: string;
-  suffix?: string;
+  children: React.ReactNode;
 };
 
 const StatCard = ({
   title,
   description,
   icon,
-  value,
   cardCN,
   iconCN,
   contentCN,
+  children,
 }: Props) => {
   const Icon = icon;
   return (
@@ -46,7 +44,7 @@ const StatCard = ({
           contentCN
         )}
       >
-        {value}
+        {children}
       </CardContent>
     </Card>
   );

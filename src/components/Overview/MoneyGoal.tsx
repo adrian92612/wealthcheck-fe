@@ -6,39 +6,56 @@ import {
   CardDescription,
 } from "@/components/ui/card";
 import { formatNumber } from "@/lib/utils";
-import { Button } from "../ui/button";
+import { useQuery } from "@tanstack/react-query";
+import { qCacheKey } from "@/constants/queryKeys";
+import { overviewApi } from "@/lib/api";
+import MoneyGoalFormDialog from "./MoneyGoalFormDialog";
+
+const getProgressColor = (percent: number) =>
+  percent < 50
+    ? "bg-destructive"
+    : percent < 90
+    ? "bg-blue-muted"
+    : "bg-primary";
 
 const MoneyGoal = () => {
-  const goalName = "Some Goal";
-  const targetAmount = 1000000;
-  const currentAmount = 780000;
-  const percentComplete = Math.min((currentAmount / targetAmount) * 100, 100);
+  const { data: response, isPending } = useQuery({
+    queryKey: qCacheKey.moneyGoal,
+    queryFn: overviewApi.getMoneyGoal,
+    throwOnError: true,
+  });
+
+  if (isPending) return <div>Loading...</div>;
+  if (!response?.success) {
+    return <div>Something went wrong: {response?.message}</div>;
+  }
+
+  const data = response.data ?? {};
+  const { name = "Goal", amount = 0, currentBalance = 0 } = data;
+
+  const percentComplete = Math.min((currentBalance / (amount || 1)) * 100, 100);
 
   return (
     <Card className="justify-between min-h-44">
       <CardHeader className="flex justify-between gap-5">
         <div>
-          <CardTitle>{goalName}</CardTitle>
+          <CardTitle>{name}</CardTitle>
           <CardDescription>Progress towards your goal</CardDescription>
         </div>
-        <Button variant="secondary">Update</Button>
+        <MoneyGoalFormDialog moneyGoal={response.data} />
       </CardHeader>
       <CardContent>
         <div className="flex justify-between mb-2 text-sm">
           <span>Saved</span>
           <span>
-            {formatNumber(currentAmount)} / {formatNumber(targetAmount)}
+            {formatNumber(currentBalance)} / {formatNumber(amount)}
           </span>
         </div>
         <div className="w-full h-4 bg-gray-200 rounded-full overflow-hidden">
           <div
-            className={`h-4 rounded-full transition-all duration-300 ${
-              percentComplete < 50
-                ? "bg-destructive"
-                : percentComplete < 90
-                ? "bg-blue-muted"
-                : "bg-primary"
-            }`}
+            className={`h-4 rounded-full transition-all duration-300 ${getProgressColor(
+              percentComplete
+            )}`}
             style={{ width: `${percentComplete}%` }}
           />
         </div>
