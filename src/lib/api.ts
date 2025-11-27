@@ -14,6 +14,8 @@ import type {
   TopCategories,
   MoneyGoal,
   MoneyGoalFormData,
+  MoneyBudget,
+  MoneyBudgetFormData,
 } from "./types";
 import { toQueryString } from "./utils";
 
@@ -67,6 +69,13 @@ export const overviewApi = {
   getMoneyGoal: () => apiFetch<MoneyGoal>(apiEndpoints.overview.moneyGoal),
   updateMoneyGoal: (data: MoneyGoalFormData) =>
     apiFetch<MoneyGoal>(apiEndpoints.overview.moneyGoal, {
+      method: "POST",
+      body: JSON.stringify(data),
+    }),
+  getMoneyBudget: () =>
+    apiFetch<MoneyBudget>(apiEndpoints.overview.moneyBudget),
+  updateMoneyBudget: (data: MoneyBudgetFormData) =>
+    apiFetch<MoneyGoal>(apiEndpoints.overview.moneyBudget, {
       method: "POST",
       body: JSON.stringify(data),
     }),

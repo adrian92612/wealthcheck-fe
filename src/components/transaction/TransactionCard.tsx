@@ -29,6 +29,7 @@ const keysToInvalidate = [
   qCacheKey.transactions,
   qCacheKey.trashedTransactions,
   qCacheKey.moneyGoal,
+  qCacheKey.moneyBudget,
   qCacheKey.recentTransactions,
   qCacheKey.topTransactions,
   qCacheKey.currentSummary,

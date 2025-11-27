@@ -19,6 +19,7 @@ export const apiEndpoints = {
     dailyNetSnapshot: overviewUrl + "/daily-net-snapshot",
     topCategories: overviewUrl + "/top-categories",
     moneyGoal: overviewUrl + "/money-goal",
+    moneyBudget: overviewUrl + "/money-budget",
   },
   trash: {
     transactions: apiBaseUrl + "/transaction/deleted",

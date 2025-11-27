@@ -1,6 +1,7 @@
 import z from "zod";
 import type {
   categorySchema,
+  moneyBudgetSchema,
   moneyGoalSchema,
   transactionSchema,
   walletSchema,
@@ -89,6 +90,7 @@ export type TransactionType = (typeof transactionTypes)[number];
 
 export type WalletFormData = z.infer<typeof walletSchema>;
 export type MoneyGoalFormData = z.infer<typeof moneyGoalSchema>;
+export type MoneyBudgetFormData = z.infer<typeof moneyBudgetSchema>;
 
 export type CurrentSummary = {
   totalBalance: number;
@@ -122,4 +124,10 @@ export type MoneyGoal = {
   name: string;
   amount: number;
   currentBalance: number;
+};
+
+export type MoneyBudget = {
+  name: string;
+  amount: number;
+  spentAmount: number;
 };
