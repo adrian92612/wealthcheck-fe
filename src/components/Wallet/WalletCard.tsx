@@ -28,7 +28,7 @@ const WalletCard = ({ wallet }: Props) => {
   const { forSoftDeleted } = useTrash();
   const keysToInvalidate = [qCacheKey.wallets, qCacheKey.trashedWallets];
   return (
-    <Card className="rounded-xl shadow-lg border-l-2 border-primary bg-background">
+    <Card className="rounded-xl shadow-md border-l-3 border-primary/30 h-full">
       <CardHeader>
         <div className="flex justify-between items-center">
           <CardTitle className="text-lg font-semibold">{wallet.name}</CardTitle>
@@ -82,7 +82,7 @@ const WalletCard = ({ wallet }: Props) => {
       </CardHeader>
       <CardContent>
         <p className="text-sm text-text-muted">Balance</p>
-        <p className="text-2xl font-bold text-green-600">
+        <p className="text-2xl font-bold text-primary">
           {formatNumber(wallet.balance)}
         </p>
       </CardContent>
