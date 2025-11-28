@@ -32,7 +32,7 @@ const TopTransactions = () => {
         <CardDescription>Most significant incomes and expenses</CardDescription>
       </CardHeader>
 
-      <CardContent>
+      <CardContent className="p-2">
         <div className="space-y-5">
           <div>
             <h3 className="font-semibold mb-2 text-primary">Income</h3>

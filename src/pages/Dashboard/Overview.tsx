@@ -15,8 +15,8 @@ const Overview = () => {
         description="Get a snapshot of your finances, including current balances, recent transactions, and top spending categories."
       />
 
-      <div className="grid gap-5 lg:grid-cols-3 ">
-        <div className="flex flex-col gap-5 lg:col-span-2 ">
+      <div className="grid gap-5 lg:grid-cols-3 lg:items-start">
+        <div className="flex flex-col gap-5 lg:col-span-2">
           <CurrentSummary />
           <div className="grid gap-5 lg:grid-cols-2">
             <MoneyGoal />
@@ -25,7 +25,7 @@ const Overview = () => {
           <DailyNet />
           <TopCategories />
         </div>
-        <div className="space-y-5">
+        <div className="flex flex-col gap-5">
           <RecentTransactions />
           <TopTransactions />
         </div>
