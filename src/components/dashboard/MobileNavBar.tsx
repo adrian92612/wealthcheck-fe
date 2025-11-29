@@ -65,8 +65,8 @@ const MobileNavBar = ({ open, setOpen, handleLinkClick, menu }: Props) => {
                       variant="link"
                       onClick={handleLinkClick}
                       className={cn(
-                        "w-full justify-start gap-4 rounded-none",
-                        isActive && "bg-forestGreen text-white"
+                        "w-full justify-start gap-5.5 rounded-none hover:text-secondary transition-none",
+                        isActive && "bg-primary/5 border-l-5 border-primary"
                       )}
                     >
                       <span>

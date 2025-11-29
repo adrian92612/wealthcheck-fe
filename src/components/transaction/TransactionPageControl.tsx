@@ -25,45 +25,54 @@ const TransactionPageControl = ({
   handlePageSizeChange,
 }: Props) => {
   return (
-    <div className="flex justify-between gap-5 flex-wrap">
-      <div className="flex flex-col gap-2">
-        <Select
-          value={String(filter.size)}
-          onValueChange={(value) => handlePageSizeChange(Number(value))}
-        >
-          <SelectTrigger className="w-48">
-            <SelectValue placeholder="Select a Type" />
-          </SelectTrigger>
-          <SelectContent>
-            {[5, 10, 20, 50].map((n) => (
-              <SelectItem key={n} value={String(n)}>
-                {n} per page
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
+    <div className="flex justify-between gap-5 flex-wrap items-center">
+      <div className="flex items-center gap-5">
+        <div className="flex flex-col gap-1">
+          <Select
+            value={String(filter.size)}
+            onValueChange={(value) => handlePageSizeChange(Number(value))}
+          >
+            <SelectTrigger className="w-32 h-9">
+              <SelectValue placeholder="Page size" />
+            </SelectTrigger>
+            <SelectContent>
+              {[5, 10, 20, 50].map((n) => (
+                <SelectItem key={n} value={String(n)}>
+                  {n} per page
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
 
-        <div className="inline-flex items-center gap-1 rounded-sm bg-secondary/30 border border-secondary/50 px-3 py-1 text-sm font-medium">
-          <FileText className="w-4 h-4 opacity-70 text-primary" />
-          {txResp.totalItems} record(s)
+        <div className="inline-flex items-center gap-1 rounded-full bg-muted px-3 py-1 text-sm font-medium text-muted-foreground border border-border">
+          <FileText className="w-4 h-4 text-primary" />
+          <span className="font-semibold text-foreground">
+            {txResp.totalItems}
+          </span>{" "}
+          record(s)
         </div>
       </div>
 
       <div className="flex items-center gap-2">
         <Button
-          size="sm"
+          size="icon"
+          variant="outline"
+          className="h-9 w-9"
           disabled={filter.page === 1}
           onClick={() => handlePageChange((filter.page ?? 1) - 1)}
         >
           <ChevronLeft size={16} />
         </Button>
 
-        <span>
-          {txResp.currentPage} / {txResp.totalPages}
+        <span className="text-sm font-medium text-foreground">
+          Page {txResp.currentPage} of {txResp.totalPages}
         </span>
 
         <Button
-          size="sm"
+          size="icon"
+          variant="outline"
+          className="h-9 w-9"
           disabled={filter.page === txResp.totalPages}
           onClick={() => handlePageChange((filter.page ?? 1) + 1)}
         >

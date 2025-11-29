@@ -19,14 +19,15 @@ const WalletList = () => {
   if (!response?.success) return <div>Error: {response?.message}</div>;
 
   const wallets: Wallet[] = response.data;
+  const sortedWallet = wallets.sort((a, b) => b.balance - a.balance);
 
   return (
-    <ul className="flex flex-wrap justify-center sm:justify-start gap-5">
-      {!forSoftDeleted && <WalletSummaryCard wallets={wallets} />}
+    <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-6">
+      {!forSoftDeleted && <WalletSummaryCard wallets={sortedWallet} />}
 
-      {!!wallets.length &&
-        wallets.map((wallet) => (
-          <li key={wallet.id} className="flex-[1_0_300px] max-w-[300px]">
+      {!!sortedWallet.length &&
+        sortedWallet.map((wallet) => (
+          <li key={wallet.id}>
             <WalletCard wallet={wallet} />
           </li>
         ))}

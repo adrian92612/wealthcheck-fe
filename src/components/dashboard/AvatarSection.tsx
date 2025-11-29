@@ -8,24 +8,26 @@ import { useAuth } from "@/hooks/useAuth";
 const AvatarSection = () => {
   const { user } = useAuth();
   return (
-    <div className="space-y-4 bg-primary/10 pt-5">
-      <div className="flex items-center gap-4 pl-3.5">
+    <div className="space-y-4 py-5 border-t overflow-hidden">
+      <div className="flex items-center gap-4 pl-4">
         <Avatar>
           <AvatarImage src={user?.avatarUrl} />
           <AvatarFallback>{getInitials(user?.name ?? "")}</AvatarFallback>
         </Avatar>
-        <span className="font-semibold">{getFirstName(user?.name ?? "")}</span>
+        <span className="font-merriweather text-sm whitespace-nowrap">
+          {getFirstName(user?.name ?? "")}
+        </span>
       </div>
 
       <Button
         asChild
         variant="ghost"
         size="sm"
-        className="justify-start w-full rounded-none gap-5.5 border-t border-secondary/50 pt-2"
+        className="justify-start w-full rounded-none gap-5.5 p-2 pl-3 hover:bg-primary/5"
       >
         <a href={apiEndpoints.auth.logout}>
           <LogOut className="size-5 ml-2" />
-          <span className="font-semibold text-sm">Logout</span>
+          <span className="text-sm">Logout</span>
         </a>
       </Button>
     </div>

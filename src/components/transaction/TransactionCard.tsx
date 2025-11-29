@@ -24,6 +24,7 @@ import { transactionApi } from "@/lib/api";
 import { qCacheKey } from "@/constants/queryKeys";
 import DeleteBtn from "../common/DeleteBtn";
 import { memo, useMemo, useState, type JSX } from "react";
+import { cn } from "@/lib/utils";
 
 const keysToInvalidate = [
   qCacheKey.transactions,
@@ -96,53 +97,88 @@ const TransactionCard = ({ tx }: Props) => {
     [tx.toWalletName, tx.toWalletId]
   );
 
-  const walletLabel = useMemo(() => {
-    if (tx.type === "INCOME") return toLabel;
-    if (tx.type === "EXPENSE") return fromLabel;
-    return `${fromLabel} → ${toLabel}`;
-  }, [tx.type, fromLabel, toLabel]);
-
   const formattedDate = useMemo(
-    () => format(new Date(tx.transactionDate), "MMM d, yyyy hh:mm a"),
+    () => format(new Date(tx.transactionDate), "MM/dd/yy hh:mm a"),
     [tx.transactionDate]
   );
 
-  const amountClass = useMemo(() => {
+  const typeColorClass = useMemo(() => {
     switch (tx.type) {
       case "INCOME":
-        return "text-primary";
+        return {
+          text: "text-primary",
+          bg: "bg-primary/10",
+          border: "border-l-primary/70",
+          sign: "+",
+        };
       case "EXPENSE":
-        return "text-destructive";
+        return {
+          text: "text-destructive",
+          bg: "bg-destructive/10",
+          border: "border-l-destructive/70",
+          sign: "-",
+        };
       default:
-        return "text-blue-muted";
+        return {
+          text: "text-blue-muted",
+          bg: "bg-blue-muted/10",
+          border: "border-l-blue-muted/70",
+          sign: "",
+        };
     }
   }, [tx.type]);
 
   return (
-    <div className="flex items-center text-sm sm:text-base justify-between rounded-sm border border-secondary/10 bg-secondary/5 p-3 shadow-sm gap-5 overflow-x-auto">
-      <div className="flex items-center gap-3">
-        <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gray-100">
-          <Icon className="size-5 text-gray-700" />
+    <div
+      className={cn(
+        "flex items-center justify-between rounded-md border shadow-md transition-shadow hover:shadow-lg overflow-x-auto",
+        "border-border bg-card/70",
+        typeColorClass.border,
+        "border-l-2 p-2 sm:p-4"
+      )}
+    >
+      <div className="flex items-center gap-4 min-w-0 flex-1">
+        <div
+          className={cn(
+            "flex h-10 w-10 items-center justify-center rounded-full shrink-0",
+            typeColorClass.bg
+          )}
+        >
+          <Icon className={cn("size-5", typeColorClass.text)} />{" "}
         </div>
 
-        <div className="text-xs sm:text-base">
-          <p className="font-medium">{tx.title}</p>
+        <div className="truncate text-xs sm:text-base flex flex-col min-w-0">
+          <p className="font-semibold truncate text-foreground">{tx.title}</p>
           {tx.type === "TRANSFER" ? (
-            <p className="text-muted-foreground inline-flex gap-1">
-              {fromLabel} → {toLabel}
+            <p className="text-muted-foreground text-xs inline-flex gap-1 items-center">
+              {fromLabel} <ArrowLeftRight size={12} className="text-gray-400" />{" "}
+              {toLabel}
             </p>
           ) : (
-            <p className="text-muted-foreground inline-flex gap-1">
-              {categoryLabel} • {walletLabel}
+            <p className="text-muted-foreground text-xs inline-flex gap-2 items-center">
+              <span className="inline-flex items-center gap-1">
+                <LucideTag size={12} className="text-gray-400" />{" "}
+                {categoryLabel}
+              </span>
+              <span className="text-gray-300">•</span>
+              <span className="inline-flex items-center gap-1">
+                <LucideWallet size={12} className="text-gray-400" />{" "}
+                {toLabel || fromLabel}
+              </span>
             </p>
           )}
         </div>
       </div>
 
-      <div className="flex gap-2">
+      <div className="flex items-center gap-2 shrink-0 pl-4">
         <div className="text-right">
-          <p className={`font-bold ${amountClass}`}>
-            {tx.type === "EXPENSE" ? "-" : ""}
+          <p
+            className={cn(
+              "font-extrabold text-sm md:text-lg tracking-tight",
+              typeColorClass.text
+            )}
+          >
+            {typeColorClass.sign}
             {formatNumber(tx.amount)}
           </p>
           <p className="text-xs text-muted-foreground">{formattedDate}</p>
@@ -153,12 +189,12 @@ const TransactionCard = ({ tx }: Props) => {
             <Button
               variant="ghost"
               size="icon"
-              className="p-1 size-7 rounded-full hover:bg-muted"
+              className="p-1 size-8 rounded-full hover:bg-muted/70"
             >
               <MoreVertical size={16} />
             </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent>
+          <DropdownMenuContent align="end">
             <DropdownMenuLabel className="text-center">
               More Actions
             </DropdownMenuLabel>

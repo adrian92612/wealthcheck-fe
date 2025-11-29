@@ -18,22 +18,22 @@
   --radius: 0.625rem;
 
   /* Keep only one text color token */
-  --text: #292524;
+  --text: oklch(0.2685 0.0063 34.3);
   --text-muted: oklch(0.45 0 0);
 
   /* Backgrounds */
-  --background: oklch(1 0 0);
+  --background: oklch(0.995 0.0015 0);
   --card: oklch(1 0 0);
   --popover: oklch(1 0 0);
 
   /* Surfaces/accents */
   --primary: oklch(0.4086 0.0787 162.45);
-  --secondary: oklch(0.6774 0.1444 32.94);
+  --secondary: oklch(0.5 0.12 30);
   --muted: oklch(0.97 0 0);
   --accent: oklch(0.97 0 0);
   --destructive: oklch(0.38 0.18 22);
   --blue-muted: oklch(0.41 0.08 260);
-  --offwhite-light: oklch(0.98 0 0);
+  --offwhite-light: oklch(0.995 0.0015 0);
   --offwhite-dark: oklch(0.2178 0 0);
 
   /* UI */
@@ -110,6 +110,9 @@
 }
 
 @layer base {
+  html {
+    @apply overflow-hidden;
+  }
   * {
     @apply border-border outline-ring/50;
   }
