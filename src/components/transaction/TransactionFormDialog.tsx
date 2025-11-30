@@ -185,6 +185,7 @@ const TransactionFormDialog = ({
                   <FormItem>
                     <FormLabel>Type</FormLabel>
                     <Select
+                      disabled={!!transaction}
                       onValueChange={(val) => {
                         field.onChange(val);
                         form.setValue("fromWalletId", undefined);
@@ -219,6 +220,7 @@ const TransactionFormDialog = ({
                       <FormItem>
                         <FormLabel>From Wallet</FormLabel>
                         <Select
+                          disabled={!!transaction}
                           onValueChange={(val) => field.onChange(Number(val))}
                           value={field.value ? String(field.value) : ""}
                         >
@@ -256,6 +258,7 @@ const TransactionFormDialog = ({
                       <FormItem>
                         <FormLabel>To Wallet</FormLabel>
                         <Select
+                          disabled={!!transaction}
                           onValueChange={(val) => field.onChange(Number(val))}
                           value={field.value ? String(field.value) : ""}
                         >
