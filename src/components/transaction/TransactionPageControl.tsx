@@ -45,7 +45,7 @@ const TransactionPageControl = ({
           </Select>
         </div>
 
-        <div className="inline-flex items-center gap-1 rounded-full bg-muted px-3 py-1 text-sm font-medium text-muted-foreground border border-border">
+        <div className="inline-flex items-center gap-1 rounded-full bg-accent px-3 py-1 text-sm font-medium text-muted-foreground border border-border">
           <FileText className="w-4 h-4 text-primary" />
           <span className="font-semibold text-foreground">
             {txResp.totalItems}

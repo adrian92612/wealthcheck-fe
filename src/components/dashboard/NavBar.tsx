@@ -23,11 +23,6 @@ const NavBar = ({ open, toggleSidebar, handleLinkClick, menu }: Props) => {
         "flex flex-col justify-between bg-card pt-2  transition-all ease-in-out duration-200 border-r border-r-primary/10 relative"
       )}
     >
-      {/* <div
-        className={cn(
-          "flex items-center w-fit justify-start px-3.5 mb-2 whitespace-nowrap absolute -right-1/2 top-10 z-10  "
-        )}
-      > */}
       <Button
         onClick={toggleSidebar}
         variant="default"
